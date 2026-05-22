@@ -1,1 +1,218 @@
-if(!self.define){let e,s={};const t=(t,n)=>(t=new URL(t+".js",n).href,s[t]||new Promise(s=>{if("document"in self){const e=document.createElement("script");e.src=t,e.onload=s,document.head.appendChild(e)}else e=t,importScripts(t),s()}).then(()=>{let e=s[t];if(!e)throw new Error(`Module ${t} didn’t register its module`);return e}));self.define=(n,a)=>{const c=e||("document"in self?document.currentScript.src:"")||location.href;if(s[c])return;let i={};const r=e=>t(e,c),o={module:{uri:c},exports:i,require:r};s[c]=Promise.all(n.map(e=>o[e]||r(e))).then(e=>(a(...e),i))}}define(["./workbox-4754cb34"],function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/_next/app-build-manifest.json",revision:"2a660833d6d18707e096d59c86c8da5d"},{url:"/_next/static/cJQMe4JQhJk6w6lYPeR7t/_buildManifest.js",revision:"2ec694eb52ae4f523f265a46bae4d768"},{url:"/_next/static/cJQMe4JQhJk6w6lYPeR7t/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/23-17d109591ec31f31.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/231-f35b59634dca96cb.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/386-28096f86480ae6ab.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/69806262-98c9dfc39c211a65.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/_not-found/page-846bc14f8cdb3714.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/auth/page-cb20876dfda5945b.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/dashboard/page-315125a61cf41727.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/layout-2dcafa0a3d621fe8.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/medicines/page-f4a1e88a2f246cab.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/page-5addc6d7891296d2.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/reports/page-59a817b7594dd7e8.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/app/settings/page-9b2fbbf9451e71da.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/bc9e92e6-d9af8b5c1373e75a.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/fd9d1056-be48aeae6e94b8d1.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/framework-f66176bb897dc684.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/main-455ab0b47f6daf2a.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/main-app-efa7d3d571941760.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/pages/_app-6a626577ffa902a4.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/pages/_error-1be831200e60c5c0.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/chunks/polyfills-78c92fac7aa8fdd8.js",revision:"79330112775102f91e1010318bae2bd3"},{url:"/_next/static/chunks/webpack-32e44b8e05e24c54.js",revision:"cJQMe4JQhJk6w6lYPeR7t"},{url:"/_next/static/css/8f62e5f031fa493a.css",revision:"8f62e5f031fa493a"},{url:"/firebase-messaging-sw.js",revision:"35a98ea02e5e1278a38c3e4377e6a340"},{url:"/icons/icon.svg",revision:"b8d79182cbba6b1b055ebf55a4d976e7"},{url:"/manifest.json",revision:"bc8f6453ea5c9fcb505cd0eb0b6a5d19"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:s,event:t,state:n})=>s&&"opaqueredirect"===s.type?new Response(s.body,{status:200,statusText:"OK",headers:s.headers}):s}]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-webfonts",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,new e.StaleWhileRevalidate({cacheName:"google-fonts-stylesheets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,new e.StaleWhileRevalidate({cacheName:"static-font-assets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,new e.StaleWhileRevalidate({cacheName:"static-image-assets",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/image\?url=.+$/i,new e.StaleWhileRevalidate({cacheName:"next-image",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp3|wav|ogg)$/i,new e.CacheFirst({cacheName:"static-audio-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp4)$/i,new e.CacheFirst({cacheName:"static-video-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:js)$/i,new e.StaleWhileRevalidate({cacheName:"static-js-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:css|less)$/i,new e.StaleWhileRevalidate({cacheName:"static-style-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/data\/.+\/.+\.json$/i,new e.StaleWhileRevalidate({cacheName:"next-data",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:json|xml|csv)$/i,new e.NetworkFirst({cacheName:"static-data-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(({url:e})=>{if(!(self.origin===e.origin))return!1;const s=e.pathname;return!s.startsWith("/api/auth/")&&!!s.startsWith("/api/")},new e.NetworkFirst({cacheName:"apis",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:16,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(({url:e})=>{if(!(self.origin===e.origin))return!1;return!e.pathname.startsWith("/api/")},new e.NetworkFirst({cacheName:"others",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(({url:e})=>!(self.origin===e.origin),new e.NetworkFirst({cacheName:"cross-origin",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:3600})]}),"GET")});
+// Service Worker for Leoparlı İlaç Takibim (L.İ.T)
+// Robust notification system for PWA (iOS Home Screen + Android)
+
+const CACHE_NAME = 'lit-cache-v3';
+const STATIC_ASSETS = [
+  '/',
+  '/dashboard',
+  '/ilaclarim',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  '/manifest.json',
+];
+
+// ----- Medicines state -----
+let medicines = [];
+let notifiedKeys = {}; // Track which notifications were already sent today
+
+// ----- Install -----
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+  );
+  self.skipWaiting();
+});
+
+// ----- Activate -----
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+  // Start the check loop immediately upon activation
+  startCheckLoop();
+});
+
+// ----- Fetch (network first, cache fallback) -----
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
+  );
+});
+
+// ----- Message handler (receive medicines from app) -----
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SCHEDULE_NOTIFICATIONS') {
+    medicines = event.data.medicines || [];
+    // Reset notified keys for the new day
+    const today = getToday();
+    const oldKeys = Object.keys(notifiedKeys);
+    for (const k of oldKeys) {
+      if (!k.startsWith(today)) delete notifiedKeys[k];
+    }
+  }
+});
+
+// ----- Push notification handler (for future server push) -----
+self.addEventListener('push', (event) => {
+  const data = event.data ? event.data.json() : {};
+  const title = data.title || '💊 İlaç Zamanı!';
+  const options = {
+    body: data.body || 'İlaç alma zamanın geldi.',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/icon-192x192.png',
+    vibrate: [200, 100, 200, 100, 200],
+    tag: data.tag || 'medicine-reminder',
+    requireInteraction: true,
+    actions: [
+      { action: 'taken', title: '✓ İçtim' },
+      { action: 'snooze', title: '⏰ 10dk Sonra' },
+    ],
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// ----- Notification click -----
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'snooze') {
+    // Snooze: re-notify after 10 minutes
+    const tag = event.notification.tag;
+    const title = event.notification.title;
+    const body = event.notification.body;
+    event.waitUntil(
+      new Promise(resolve => {
+        setTimeout(async () => {
+          await self.registration.showNotification(title + ' (Ertelendi)', {
+            body: body,
+            icon: '/icons/icon-192x192.png',
+            badge: '/icons/icon-192x192.png',
+            vibrate: [300, 100, 300, 100, 300],
+            tag: tag + '-snooze',
+            requireInteraction: true,
+            actions: [
+              { action: 'taken', title: '✓ İçtim' },
+              { action: 'snooze', title: '⏰ 10dk Sonra' },
+            ],
+          });
+          resolve();
+        }, 10 * 60 * 1000); // 10 minutes
+      })
+    );
+    return;
+  }
+
+  // Default or 'taken': open the app
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window' }).then((clients) => {
+      if (clients.length > 0) {
+        clients[0].focus();
+        clients[0].postMessage({ type: 'MEDICINE_TAKEN', tag: event.notification.tag });
+      } else {
+        self.clients.openWindow('/dashboard');
+      }
+    })
+  );
+});
+
+// ----- Periodic background sync -----
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'medicine-check') {
+    event.waitUntil(checkAndNotify());
+  }
+});
+
+// ===== CORE NOTIFICATION ENGINE =====
+
+const DAY_MAP = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+
+function getToday() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getCurrentTime() {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+}
+
+function getTodayDayKey() {
+  return DAY_MAP[new Date().getDay()];
+}
+
+async function checkAndNotify() {
+  const now = new Date();
+  const today = getToday();
+  const currentTime = getCurrentTime();
+  const todayDay = getTodayDayKey();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  for (const med of medicines) {
+    if (!med.reminder) continue;
+    if (!med.days || !med.days.includes(todayDay)) continue;
+
+    for (const schedTime of (med.schedule || [])) {
+      const [h, m] = schedTime.split(':').map(Number);
+      const schedMinutes = h * 60 + m;
+      const diff = currentMinutes - schedMinutes;
+
+      // Notify if we're within 0-2 minutes of the scheduled time
+      if (diff >= 0 && diff <= 2) {
+        const notifKey = `${today}-${med.id}-${schedTime}`;
+
+        // Skip if already notified for this slot today
+        if (notifiedKeys[notifKey]) continue;
+        notifiedKeys[notifKey] = true;
+
+        const foodMsg = med.foodInstruction === 'Aç' ? '\n🌅 Aç karnına alın.'
+                      : med.foodInstruction === 'Tok' ? '\n🍽️ Tok karnına alın.' : '';
+        const dosageMsg = med.dosage ? `\n💊 Dozaj: ${med.dosage}` : '';
+
+        try {
+          await self.registration.showNotification(`💊 ${med.name} — ${schedTime}`, {
+            body: `İlaç zamanı geldi!${dosageMsg}${foodMsg}`,
+            icon: '/icons/icon-192x192.png',
+            badge: '/icons/icon-192x192.png',
+            tag: `${med.id}-${schedTime}-${today}`,
+            requireInteraction: true,
+            vibrate: [300, 100, 300, 100, 300, 100, 300],
+            actions: [
+              { action: 'taken', title: '✓ İçtim' },
+              { action: 'snooze', title: '⏰ 10dk Sonra' },
+            ],
+          });
+        } catch (err) {
+          console.warn('Bildirim gönderilemedi:', err);
+        }
+      }
+    }
+  }
+}
+
+// ----- Timer-based check loop (every 30 seconds) -----
+let checkIntervalId = null;
+
+function startCheckLoop() {
+  if (checkIntervalId) clearInterval(checkIntervalId);
+  checkIntervalId = setInterval(() => {
+    checkAndNotify();
+  }, 30000); // Check every 30 seconds
+  // Also run immediately
+  checkAndNotify();
+}
+
+// Start loop when SW loads
+startCheckLoop();

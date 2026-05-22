@@ -1,17 +1,6 @@
-import withPWA from "next-pwa";
-
-const isProd = process.env.NODE_ENV === "production";
-
-const pwa = withPWA({
-  dest: "public",
-  disable: !isProd,
-  register: true,
-  scope: "/",
-  sw: "service-worker.js",
-});
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
-export default pwa(nextConfig);
+export default nextConfig;
