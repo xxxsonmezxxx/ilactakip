@@ -1,0 +1,16 @@
+{
+  "name": "Leoparlı İlaç Takibi",
+  "short_name": "İlaç Takip",
+  "description": "Saat bazlı ilaç hatırlatma ve raporlama uygulaması",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
