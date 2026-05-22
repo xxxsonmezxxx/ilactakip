@@ -112,6 +112,7 @@ export default function NotificationManager() {
             } catch {
               // Fallback: try SW notification
               navigator.serviceWorker?.ready.then(reg => {
+                // @ts-ignore - vibrate exists in some specs but not in TS standard dom lib
                 reg.showNotification(`💊 ${med.name} — ${schedTime}`, {
                   body: `İlaç zamanı geldi!${dosageMsg}${foodMsg}`,
                   icon: '/icons/icon-192x192.png',
@@ -126,6 +127,7 @@ export default function NotificationManager() {
           // For Alarm type only (no bildirim), still show via SW so it shows on lock screen
           if (med.reminderType === 'Alarm') {
             navigator.serviceWorker?.ready.then(reg => {
+              // @ts-ignore - vibrate exists in some specs but not in TS standard dom lib
               reg.showNotification(`⏰ ${med.name} — ${schedTime}`, {
                 body: `İlaç alarm zamanı!${dosageMsg}${foodMsg}`,
                 icon: '/icons/icon-192x192.png',
