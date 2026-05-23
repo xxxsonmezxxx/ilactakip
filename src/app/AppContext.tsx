@@ -1,6 +1,8 @@
 ﻿'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
+import { db } from '@/services/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export type FoodInstruction = 'Aç' | 'Tok' | 'Farketmez';
 export type ReminderType = 'Alarm' | 'Bildirim' | 'İkisi de';
@@ -204,6 +206,39 @@ export function AppProvider({ children }: { children: ReactNode }) {
           if (registration.active) registration.active.postMessage({ type: 'SCHEDULE_NOTIFICATIONS', medicines });
         })
         .catch(() => {});
+    }
+
+    // Sync schedules for server-side cron push (works even when phone screen is off)
+    if (db && user && !user.isAdmin) {
+      const email = normalizeEmail(user.email);
+      if (email) {
+        const safeId = email.replace(/\./g, ',');
+        const data = allMedicines
+          .filter((m) => normalizeEmail(m.userEmail) === email)
+          .map((m) => ({
+            id: m.id,
+            name: m.name,
+            dosage: m.dosage ?? '',
+            schedule: m.schedule ?? [],
+            foodInstruction: m.foodInstruction,
+            reminder: m.reminder,
+            reminderType: m.reminderType,
+            days: m.days ?? [],
+            repeatRule: m.repeatRule ?? 'manual',
+            anchorDate: m.anchorDate ?? m.createdAt?.slice(0, 10) ?? getToday(),
+          }));
+
+        setDoc(
+          doc(db, 'reminderSchedules', safeId),
+          {
+            email,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul',
+            medicines: data,
+            updatedAt: new Date().toISOString(),
+          },
+          { merge: true }
+        ).catch(() => {});
+      }
     }
   }, [allMedicines, loaded, user, medicines]);
 

@@ -2,7 +2,7 @@ import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messagi
 import { db, auth } from './firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
-export async function registerForPush(vapidKey?: string) {
+export async function registerForPush(email?: string, vapidKey?: string) {
   if (typeof window === 'undefined') return null;
   if (!('Notification' in window)) return null;
 
@@ -25,13 +25,26 @@ export async function registerForPush(vapidKey?: string) {
     const token = await getToken(messaging, { vapidKey: key });
     if (!token) return null;
 
-    // Save token to Firestore under users/{uid}/fcmTokens/{token}
+    // Save token to Firestore (both legacy uid path and email token pool for server-side cron push)
     const user = auth.currentUser;
     if (user) {
       await setDoc(doc(db, 'users', user.uid, 'fcmTokens', token), {
         token,
         createdAt: new Date().toISOString(),
       });
+    }
+    const normalizedEmail = (email ?? user?.email ?? '').trim().toLowerCase();
+    if (normalizedEmail) {
+      const safeId = normalizedEmail.replace(/\./g, ',');
+      await setDoc(
+        doc(db, 'pushTokens', safeId),
+        {
+          email: normalizedEmail,
+          tokens: { [token]: true },
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
     }
 
     // Listen for foreground messages (optional)

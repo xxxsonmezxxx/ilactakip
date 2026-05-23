@@ -129,7 +129,7 @@ export default function NotificationManager() {
 
   useEffect(() => {
     if (!user || user.isAdmin) return;
-    registerForPush().catch(() => {});
+    registerForPush(user.email).catch(() => {});
     checkMedicines();
     intervalRef.current = setInterval(checkMedicines, 30000);
     return () => {
