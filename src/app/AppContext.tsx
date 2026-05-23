@@ -236,7 +236,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const getTodayLogs = useCallback(() => {
     const today = getToday();
     const todayDay = todayDayKey();
-    const results: { medicine: MedicineRecord; time: string; status: 'taken' | 'skipped' | 'pending' }[] = [];
+    const results: { medicine: MedicineRecord; time: string; status: 'taken' | 'skipped' | 'pending' | 'snoozed' }[] = [];
 
     for (const med of medicines) {
       if (!med.days.includes(todayDay)) continue;

@@ -120,7 +120,7 @@ export default function NotificationManager() {
                   requireInteraction: true,
                   vibrate: [300, 100, 300, 100, 300],
                 };
-                reg.showNotification(`💊 ${med.name} — ${schedTime}`, opts);
+                reg.showNotification(`💊 ${med.name} — ${schedTime}`, opts as any);
               });
             }
           }
@@ -135,7 +135,7 @@ export default function NotificationManager() {
                 requireInteraction: true,
                 vibrate: [500, 200, 500, 200, 500, 200, 500],
               };
-              reg.showNotification(`⏰ ${med.name} — ${schedTime}`, opts);
+              reg.showNotification(`⏰ ${med.name} — ${schedTime}`, opts as any);
             });
           }
         }
@@ -181,7 +181,7 @@ export default function NotificationManager() {
                 tag: `snooze-${med.id}-${log.scheduleTime}-${log.date}`,
                 requireInteraction: true,
                 vibrate: [300, 100, 300]
-              });
+              } as any);
             });
           }
 

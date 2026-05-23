@@ -68,7 +68,7 @@ html {
 */
 body::before {
   /* If the file exists, use it as a subtle full-bleed background behind the fur pattern */
-  background-image: url('/images/leopard-bg.jpg'),
+  background-image: url('/images/leopar-desen-dosemelik-kumas.jpg'),
     radial-gradient(ellipse 180px 80px at 10% 15%, rgba(200, 148, 62, 0.06) 0%, transparent 100%),
     radial-gradient(ellipse 120px 200px at 85% 25%, rgba(168, 120, 48, 0.05) 0%, transparent 100%);
   background-size: cover, 180px 80px, 120px 200px;
