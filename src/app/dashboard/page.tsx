@@ -30,6 +30,7 @@ function getFoodBadge(fi: string) {
 function getStatusBadge(status: string) {
   if (status === 'taken') return <span className="badge-alindi">✓ Alındı</span>;
   if (status === 'skipped') return <span className="badge-atlandi">✕ Atlandı</span>;
+  if (status === 'snoozed') return <span className="badge-any">💤 Ertelendi</span>;
   return <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Bekliyor</span>;
 }
 
