@@ -24,7 +24,9 @@ export async function registerWebPushSubscription(email?: string | null) {
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') return null;
 
-  const publicKey = process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY ?? '';
+  const publicKey =
+    process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY ??
+    'BNTeD0LPbWaaCB3HYbmazx5eG0PiQyPzoF4RtnjTcMWXlaIpyyfTieDDFuo188bORZtUC2nQt_zSY3-flP1PgPU';
   if (!publicKey) {
     console.warn('NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY eksik, web push aboneliği atlandı.');
     return null;
@@ -55,4 +57,3 @@ export async function registerWebPushSubscription(email?: string | null) {
 
   return sub;
 }
-
