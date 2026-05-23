@@ -17,6 +17,12 @@ function periodDays(p: Period) {
   return 30;
 }
 
+function shortLabel(date: string, period: Period) {
+  const d = new Date(`${date}T00:00:00`);
+  if (period === 'aylik') return `${d.getDate()}`;
+  return ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'][d.getDay()];
+}
+
 export default function RaporlarPage() {
   const { user, dailyLogs, medicines } = useApp();
   const router = useRouter();
@@ -51,7 +57,7 @@ export default function RaporlarPage() {
       const t = list.filter((l) => l.status === 'taken').length;
       const s = list.filter((l) => l.status === 'skipped').length;
       const all = list.length;
-      return { date, taken: t, skipped: s, total: all, takenPct: all ? Math.round((t / all) * 100) : 0, skippedPct: all ? Math.round((s / all) * 100) : 0 };
+      return { date, takenPct: all ? Math.round((t / all) * 100) : 0, skippedPct: all ? Math.round((s / all) * 100) : 0 };
     });
   }, [periodLogs, rangeDates]);
 
@@ -59,13 +65,12 @@ export default function RaporlarPage() {
     return periodLogs
       .filter((l) => l.status === 'skipped')
       .sort((a, b) => `${b.date} ${b.scheduleTime}`.localeCompare(`${a.date} ${a.scheduleTime}`))
-      .map((l) => ({
-        ...l,
-        medicineName: medicines.find((m) => m.id === l.medicineId)?.name ?? 'Bilinmeyen İlaç',
-      }));
+      .map((l) => ({ ...l, medicineName: medicines.find((m) => m.id === l.medicineId)?.name ?? 'Bilinmeyen İlaç' }));
   }, [periodLogs, medicines]);
 
   if (!mounted || !user) return null;
+
+  const barWidth = tab === 'aylik' ? 16 : 28;
 
   return (
     <main style={{ minHeight: '100dvh', paddingBottom: '90px' }}>
@@ -80,12 +85,7 @@ export default function RaporlarPage() {
           ['haftalik', 'Haftalık'],
           ['aylik', 'Aylık'],
         ] as const).map(([t, label]) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={tab === t ? 'btn-amber' : 'btn-ghost'}
-            style={{ flex: 1, padding: '10px', fontSize: '13px' }}
-          >
+          <button key={t} onClick={() => setTab(t)} className={tab === t ? 'btn-amber' : 'btn-ghost'} style={{ flex: 1, padding: '10px', fontSize: '13px' }}>
             {label}
           </button>
         ))}
@@ -94,62 +94,30 @@ export default function RaporlarPage() {
       <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <div className="glass-card" style={{ padding: '18px' }}>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              onClick={() => setFocus('taken')}
-              style={{
-                flex: 1,
-                borderRadius: '12px',
-                border: focus === 'taken' ? 'none' : '1px solid var(--border-color)',
-                background: focus === 'taken' ? 'linear-gradient(135deg, #22C55E, #16A34A)' : 'transparent',
-                color: focus === 'taken' ? '#fff' : 'var(--text-secondary)',
-                padding: '12px',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
+            <button onClick={() => setFocus('taken')} style={{ flex: 1, borderRadius: '12px', border: focus === 'taken' ? 'none' : '1px solid var(--border-color)', background: focus === 'taken' ? 'linear-gradient(135deg, #22C55E, #16A34A)' : 'transparent', color: focus === 'taken' ? '#fff' : 'var(--text-secondary)', padding: '12px', fontWeight: 700, cursor: 'pointer' }}>
               İçilen %{takenPct} ({taken})
             </button>
-            <button
-              onClick={() => setFocus('skipped')}
-              style={{
-                flex: 1,
-                borderRadius: '12px',
-                border: focus === 'skipped' ? 'none' : '1px solid var(--border-color)',
-                background: focus === 'skipped' ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'transparent',
-                color: focus === 'skipped' ? '#fff' : 'var(--text-secondary)',
-                padding: '12px',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
+            <button onClick={() => setFocus('skipped')} style={{ flex: 1, borderRadius: '12px', border: focus === 'skipped' ? 'none' : '1px solid var(--border-color)', background: focus === 'skipped' ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'transparent', color: focus === 'skipped' ? '#fff' : 'var(--text-secondary)', padding: '12px', fontWeight: 700, cursor: 'pointer' }}>
               İçilmeyen %{skippedPct} ({skipped})
             </button>
           </div>
 
-          <div style={{ marginTop: '16px', height: '170px', display: 'flex', gap: '6px', alignItems: 'flex-end' }}>
-            {chartData.map((d) => {
-              const val = focus === 'taken' ? d.takenPct : d.skippedPct;
-              const bar = Math.max(4, Math.round((val / 100) * 130));
-              return (
-                <div key={d.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                  <div
-                    title={`${d.date} - ${focus === 'taken' ? 'İçilen' : 'İçilmeyen'} %${val}`}
-                    style={{
-                      width: '100%',
-                      height: `${bar}px`,
-                      borderRadius: '8px 8px 4px 4px',
-                      background: focus === 'taken' ? 'linear-gradient(180deg,#22C55E,#16A34A)' : 'linear-gradient(180deg,#EF4444,#DC2626)',
-                    }}
-                  />
-                  <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{d.date.slice(5)}</span>
-                </div>
-              );
-            })}
+          <div style={{ marginTop: '16px', overflowX: tab === 'aylik' ? 'auto' : 'visible', paddingBottom: '6px' }}>
+            <div style={{ minWidth: tab === 'aylik' ? '720px' : '100%', height: '180px', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+              {chartData.map((d) => {
+                const val = focus === 'taken' ? d.takenPct : d.skippedPct;
+                const bar = Math.max(4, Math.round((val / 100) * 130));
+                return (
+                  <div key={d.date} style={{ width: `${barWidth}px`, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                    <div title={`${d.date} - %${val}`} style={{ width: '100%', height: `${bar}px`, borderRadius: '8px 8px 4px 4px', background: focus === 'taken' ? 'linear-gradient(180deg,#22C55E,#16A34A)' : 'linear-gradient(180deg,#EF4444,#DC2626)' }} />
+                    <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{shortLabel(d.date, tab)}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--text-muted)' }}>
-            Toplam kayıt: {total}
-          </div>
+          <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--text-muted)' }}>Toplam kayıt: {total}</div>
         </div>
 
         {focus === 'skipped' && (
