@@ -86,15 +86,15 @@ export default function DashboardPage() {
       <div style={{
         background: 'rgba(8,8,8,0.92)', borderBottom: '1px solid rgba(217,119,6,0.15)',
         backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-        padding: '16px 20px 14px', position: 'sticky', top: 0, zIndex: 50,
+        padding: 'calc(16px + env(safe-area-inset-top)) 20px 14px', position: 'sticky', top: 0, zIndex: 50,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
               🐆 leoparliilactakibim
             </p>
-            <h1 style={{ fontSize: '20px', fontWeight: '700', marginTop: '2px' }}>
-              {getGreeting(user.name)}
+            <h1 style={{ fontSize: '28px', fontWeight: '800', marginTop: '2px', letterSpacing: '0.02em' }}>
+              {user.name.split(' ')[0].toUpperCase()}
             </h1>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

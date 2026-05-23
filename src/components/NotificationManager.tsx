@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { useApp, MedicineRecord, DayKey } from '../app/AppContext';
+import { registerForPush } from '@/services/messaging';
 
 /**
  * NotificationManager - Dual notification system for PWA
@@ -150,6 +151,11 @@ export default function NotificationManager() {
   // Setup interval
   useEffect(() => {
     if (!user || user.isAdmin) return;
+    
+    // Attempt to register for push (stores token in Firestore) — vapidKey must be set in env
+    registerForPush().then(tok => {
+      if (tok) console.log('FCM token registered', tok);
+    }).catch(() => {});
     
     // Run check every 30 seconds
     checkMedicines();
