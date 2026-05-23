@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,17 +8,17 @@ const ALL_DAYS: DayKey[] = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 const ALL_REMINDER_TYPES: ReminderType[] = ['Alarm', 'Bildirim', 'İkisi de'];
 
 const PILL_LABELS: Record<string, string> = {
-  'pill-red': 'ğŸ”´',
-  'pill-blue': 'ğŸ”µ',
-  'pill-green': 'ğŸŸ¢',
-  'pill-amber': 'ğŸŸ¡',
-  'pill-purple': 'ğŸŸ£',
-  'pill-teal': 'ğŸ©µ',
-  'pill-pink': 'ğŸ©·',
+  'pill-red': '🔴',
+  'pill-blue': '🔵',
+  'pill-green': '🟢',
+  'pill-amber': '🟡',
+  'pill-purple': '🟣',
+  'pill-teal': '🩵',
+  'pill-pink': '🩷',
 };
 
 function AddMedicineForm() {
-  const { user, addMedicine, updateMedicine, deleteMedicine, medicines } = useApp();
+  const { user, addMedicine, updateMedicine, medicines } = useApp();
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
@@ -36,7 +36,6 @@ function AddMedicineForm() {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [newTime, setNewTime] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     if (!user) router.replace('/login');
@@ -60,9 +59,9 @@ function AddMedicineForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    if (!name.trim()) { setError('İlaç adÄ± gerekli'); return; }
+    if (!name.trim()) { setError('İlaç adı gerekli'); return; }
     if (times.length === 0) { setError('En az bir saat ekleyin'); return; }
-    if (days.length === 0) { setError('En az bir gÃ¼n seÃ§in'); return; }
+    if (days.length === 0) { setError('En az bir gün seçin'); return; }
 
     setSaving(true);
 
@@ -102,9 +101,9 @@ function AddMedicineForm() {
     <main style={{ minHeight: '100dvh', paddingBottom: '40px' }}>
       {/* Header */}
       <div className="page-header">
-        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '22px', cursor: 'pointer', padding: '4px 8px 4px 0' }}>â€¹</button>
+        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '22px', cursor: 'pointer', padding: '4px 8px 4px 0' }}>‹</button>
         <h1 style={{ fontSize: '18px', fontWeight: '700', flex: 1 }}>
-          {editMed ? 'âœï¸ İlaç Düzenle' : '+ Yeni İlaç Ekle'}
+          {editMed ? '✏️ İlaç Düzenle' : '+ Yeni İlaç Ekle'}
         </h1>
         <button
           id="save-medicine-btn"
@@ -113,14 +112,14 @@ function AddMedicineForm() {
           disabled={saving}
           style={{ padding: '8px 18px', fontSize: '14px' }}
         >
-          {saving ? '...' : 'âœ“ Kaydet'}
+          {saving ? '...' : '✓ Kaydet'}
         </button>
       </div>
 
       <form onSubmit={handleSubmit} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Color picker */}
         <div className="glass-card" style={{ padding: '20px' }}>
-          <label className="input-label">ğŸ¨ İlaç Rengi</label>
+          <label className="input-label">🎨 İlaç Rengi</label>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '10px' }}>
             {PILL_COLOR_LIST.map(c => (
               <button key={c} type="button" onClick={() => setColor(c)} style={{
@@ -138,34 +137,34 @@ function AddMedicineForm() {
         {/* Basic Info */}
         <div className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
-            <label className="input-label">ğŸ’Š İlaç AdÄ± *</label>
+            <label className="input-label">💊 İlaç Adı *</label>
             <input
               id="medicine-name"
               type="text"
               className="input-field"
-              placeholder="Ã–rn: Amlodipin 5mg"
+              placeholder="Örn: Amlodipin 5mg"
               value={name}
               onChange={e => setName(e.target.value)}
             />
           </div>
           <div>
-            <label className="input-label">âš–ï¸ Dozaj</label>
+            <label className="input-label">⚖️ Dozaj</label>
             <input
               id="medicine-dosage"
               type="text"
               className="input-field"
-              placeholder="Ã–rn: 1 KapsÃ¼l, 250ml, YarÄ±m Tablet"
+              placeholder="Örn: 1 Kapsül, 250ml, Yarım Tablet"
               value={dosage}
               onChange={e => setDosage(e.target.value)}
             />
           </div>
           <div>
-            <label className="input-label">ğŸ“ AçÄ±klama (isteÄŸe bağlı)</label>
+            <label className="input-label">📝 Açıklama (isteğe bağlı)</label>
             <input
               id="medicine-desc"
               type="text"
               className="input-field"
-              placeholder="Ã–rn: Tansiyon ilacÄ±"
+              placeholder="Örn: Tansiyon ilacı"
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
@@ -174,12 +173,12 @@ function AddMedicineForm() {
 
         {/* Food Instruction */}
         <div className="glass-card" style={{ padding: '20px' }}>
-          <label className="input-label">ğŸ½ï¸ KullanÄ±m Åekli</label>
+          <label className="input-label">🍽️ Kullanım Şekli</label>
           <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
             {([
-              ['Aç', 'ğŸŒ…', 'Aç karnÄ±na'],
-              ['Tok', 'ğŸ½ï¸', 'Tok karnÄ±na'],
-              ['Farketmez', 'âš¡', 'Belirtilmedi'],
+              ['Aç', '🌅', 'Aç karnına'],
+              ['Tok', '🍽️', 'Tok karnına'],
+              ['Farketmez', '⚡', 'Belirtilmedi'],
             ] as const).map(([val, icon, label]) => (
               <button
                 key={val}
@@ -197,14 +196,14 @@ function AddMedicineForm() {
 
         {/* Times */}
         <div className="glass-card" style={{ padding: '20px' }}>
-          <label className="input-label">ğŸ• KullanÄ±m Saatleri</label>
+          <label className="input-label">🕐 Kullanım Saatleri</label>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px', marginBottom: '12px' }}>
             {times.map(t => (
               <div key={t} className="time-chip">
-                ğŸ• {t}
+                🕐 {t}
                 <button type="button" onClick={() => removeTime(t)} style={{
                   background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '14px', padding: '0 0 0 4px',
-                }}>âœ•</button>
+                }}>✕</button>
               </div>
             ))}
           </div>
@@ -223,7 +222,7 @@ function AddMedicineForm() {
 
         {/* Days */}
         <div className="glass-card" style={{ padding: '20px' }}>
-          <label className="input-label">ğŸ“… Tekrar Günleri</label>
+          <label className="input-label">📅 Tekrar Günleri</label>
           <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
             {ALL_DAYS.map(d => (
               <button
@@ -253,7 +252,7 @@ function AddMedicineForm() {
         {/* Reminder */}
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <label className="input-label" style={{ margin: 0 }}>ğŸ”” HatÄ±rlatÄ±cÄ±</label>
+            <label className="input-label" style={{ margin: 0 }}>🔔 Hatırlatıcı</label>
             <label className="toggle-wrapper">
               <input
                 id="reminder-toggle"
@@ -268,7 +267,7 @@ function AddMedicineForm() {
 
           {reminder && (
             <div>
-              <label className="input-label">HatÄ±rlatma TÃ¼rÃ¼</label>
+              <label className="input-label">Hatırlatma Türü</label>
               <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
                 {ALL_REMINDER_TYPES.map(rt => (
                   <button
@@ -279,7 +278,7 @@ function AddMedicineForm() {
                     className={`food-chip ${reminderType === rt ? 'active' : ''}`}
                     style={{ fontSize: '12px' }}
                   >
-                    {rt === 'Alarm' ? 'â°' : rt === 'Bildirim' ? 'ğŸ””' : 'ğŸ””â°'}
+                    {rt === 'Alarm' ? '⏰' : rt === 'Bildirim' ? '🔔' : '🔔⏰'}
                     <span>{rt}</span>
                   </button>
                 ))}
@@ -293,7 +292,7 @@ function AddMedicineForm() {
             background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
             borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#F87171',
           }}>
-            âš ï¸ {error}
+            ⚠️ {error}
           </div>
         )}
 
@@ -304,52 +303,10 @@ function AddMedicineForm() {
           disabled={saving}
           style={{ padding: '16px', fontSize: '16px' }}
         >
-          {saving ? 'â³ Kaydediliyor...' : editMed ? 'âœ“ Değişiklikleri Kaydet' : '+ İlaç Ekle'}
+          {saving ? '⏳ Kaydediliyor...' : editMed ? '✓ Değişiklikleri Kaydet' : '+ İlaç Ekle'}
         </button>
-      
-        {editMed && (
-          <button
-            type="button"
-            onClick={() => setConfirmDelete(true)}
-            style={{
-              padding: '14px',
-              fontSize: '15px',
-              borderRadius: '14px',
-              background: 'rgba(239,68,68,0.12)',
-              border: '1px solid rgba(239,68,68,0.35)',
-              color: '#dc2626',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            Bu ilacı sil
-          </button>
-        )}
-</form>
-    
-      {confirmDelete && editMed && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.45)', zIndex: 210, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div className="glass-card" style={{ width: '100%', maxWidth: '360px', padding: '22px' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '8px' }}>İlaç silinsin mi?</h3>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>Bu ilaç ve takibi listeden kaldırılır.</p>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button type="button" onClick={() => setConfirmDelete(false)} className="btn-ghost" style={{ flex: 1, padding: '10px' }}>Vazgeç</button>
-              <button
-                type="button"
-                onClick={() => {
-                  deleteMedicine(editMed.id);
-                  setConfirmDelete(false);
-                  router.replace('/ilaclarim');
-                }}
-                style={{ flex: 1, padding: '10px', borderRadius: '12px', border: '1px solid rgba(239,68,68,0.35)', background: 'rgba(239,68,68,0.12)', color: '#dc2626', fontWeight: 700, cursor: 'pointer' }}
-              >
-                Sil
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-</main>
+      </form>
+    </main>
   );
 }
 
@@ -364,9 +321,9 @@ function scheduleNotifications(
   if (Notification.permission !== 'granted') return;
 
   // Schedule a test notification immediately to confirm
-  const foodMsg = foodInstruction === 'Aç' ? 'Aç karnÄ±na alÄ±n.' : foodInstruction === 'Tok' ? 'Tok karnÄ±na alÄ±n.' : '';
-  new Notification(`ğŸ’Š ${name}`, {
-    body: `İlaç eklendi. ${times.join(', ')} saatlerinde hatÄ±rlatacaÄŸÄ±z. ${foodMsg}`,
+  const foodMsg = foodInstruction === 'Aç' ? 'Aç karnına alın.' : foodInstruction === 'Tok' ? 'Tok karnına alın.' : '';
+  new Notification(`💊 ${name}`, {
+    body: `İlaç eklendi. ${times.join(', ')} saatlerinde hatırlatacağız. ${foodMsg}`,
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-192x192.png',
   });
@@ -382,5 +339,3 @@ export default function AddMedicinePage() {
     </Suspense>
   );
 }
-
-
