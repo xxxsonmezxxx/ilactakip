@@ -58,7 +58,18 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | null>(null);
 
-const PILL_COLORS = ['pill-red', 'pill-blue', 'pill-green', 'pill-amber', 'pill-purple', 'pill-teal', 'pill-pink'];
+const PILL_COLORS = [
+  'pill-red',
+  'pill-blue',
+  'pill-green',
+  'pill-amber',
+  'pill-purple',
+  'pill-teal',
+  'pill-pink',
+  'pill-indigo',
+  'pill-orange',
+  'pill-cyan',
+];
 const normalizeEmail = (value?: string | null) => (value ?? '').trim().toLowerCase();
 
 function getToday(): string {

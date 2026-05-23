@@ -324,6 +324,9 @@ body::after {
 .pill-purple { background: linear-gradient(135deg, #9B59B6, #8E44AD); }
 .pill-teal { background: linear-gradient(135deg, #1ABC9C, #16A085); }
 .pill-pink { background: linear-gradient(135deg, #E74C8E, #C9246B); }
+.pill-indigo { background: linear-gradient(135deg, #6366F1, #4338CA); }
+.pill-orange { background: linear-gradient(135deg, #FB923C, #EA580C); }
+.pill-cyan { background: linear-gradient(135deg, #22D3EE, #0891B2); }
 
 /* â•â•â•â•â•â• LEOPARD BORDER â•â•â•â•â•â• */
 .leopard-border {
