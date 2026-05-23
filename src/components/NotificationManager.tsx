@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useApp, isMedicineDueOnDate } from '../app/AppContext';
 import { registerForPush } from '@/services/messaging';
+import { registerWebPushSubscription } from '@/services/webPush';
 
 function getToday(): string {
   return new Date().toISOString().split('T')[0];
@@ -130,6 +131,7 @@ export default function NotificationManager() {
   useEffect(() => {
     if (!user || user.isAdmin) return;
     registerForPush(user.email).catch(() => {});
+    registerWebPushSubscription(user.email).catch(() => {});
     checkMedicines();
     intervalRef.current = setInterval(checkMedicines, 30000);
     return () => {

@@ -115,6 +115,30 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+  let payload = {};
+  try {
+    payload = event.data.json();
+  } catch {
+    payload = { title: 'İlaç Hatırlatma', body: event.data.text() };
+  }
+
+  const title = payload.title || '💊 İlaç Hatırlatma';
+  const options = {
+    body: payload.body || 'İlacınızı alma zamanı geldi.',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/icon-192x192.png',
+    tag: payload.tag || `push-${Date.now()}`,
+    requireInteraction: true,
+    vibrate: [300, 100, 300],
+    actions: payload.actions || actions(),
+    data: payload.data || {},
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
 function getToday() {
   return new Date().toISOString().split('T')[0];
 }

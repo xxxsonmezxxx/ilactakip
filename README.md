@@ -1,45 +1,59 @@
-ï»¿# LeoparlÄ± Ä°laÃ§ Takibi
+# Leoparlý Ýlaç Takibi
 
-Next.js tabanlÄ± ilaÃ§ takip uygulamasÄ±.
+Next.js tabanlý ilaç takip uygulamasý.
 
-## Ã‡alÄ±ÅŸtÄ±rma
+## Çalýþtýrma
 
 1. `npm install`
-2. `.env.local` dosyasÄ±nÄ± doldurun (`NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_VAPID_KEY`)
+2. `.env.local` dosyasýný doldurun (`NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY`)
 3. `npm run dev`
 
-## KapalÄ± Ekranda Bildirim (GerÃ§ek Push)
+## Kapalý Ekranda Bildirim (Kartsýz Yöntem)
 
-KapalÄ± ekran bildirimi iÃ§in sadece tarayÄ±cÄ± zamanlayÄ±cÄ±sÄ± yeterli deÄŸildir.
-Bu projede gerÃ§ek Ã§Ã¶zÃ¼m olarak Firebase Cloud Functions + FCM eklendi.
+Kapalý ekran bildirimi için sadece açýk sekme zamanlayýcýsý yeterli deðildir.
+Bu projede kart zorunluluðu olmadan `GitHub Actions Cron + Web Push` akýþý eklendi.
 
 ### Gerekenler
 
-1. Firebase projesi
-2. Cloud Messaging aktif
-3. Web push VAPID key
-4. Functions deploy
+1. Firebase projesi (Firestore)
+2. VAPID anahtar çifti
+3. GitHub repo secrets
+4. PWA'nýn iPhone'da Safari üzerinden ana ekrana eklenmesi
 
-### Functions kurulumu
+### VAPID üretimi
 
 ```bash
-cd functions
-npm install
-npm run build
-cd ..
-firebase deploy --only functions
+npx web-push generate-vapid-keys
 ```
 
-`functions/src/index.ts` iÃ§inde dakikalÄ±k cron Ã§alÄ±ÅŸÄ±r ve `reminderSchedules` koleksiyonuna gÃ¶re FCM push yollar.
+Public key'i `.env.local` içine `NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY` olarak yazýn.
 
-## Veri AkÄ±ÅŸÄ±
+### GitHub Secrets
 
-- Ä°stemci giriÅŸ yapÄ±nca cihaz token'Ä± `pushTokens` koleksiyonuna yazÄ±lÄ±r.
-- Ä°laÃ§lar deÄŸiÅŸince program `reminderSchedules` koleksiyonuna senkronlanÄ±r.
-- Sunucu cron'u saati gelen ilaÃ§larÄ± bulur ve push gÃ¶nderir.
-- Bildirim aksiyonlarÄ± (`Ä°Ã§tim`, `Atla`, `HatÄ±rlat`) uygulamada log'a iÅŸlenir.
+Repo `Settings > Secrets and variables > Actions`:
+
+- `FIREBASE_SERVICE_ACCOUNT_JSON`: Firebase servis hesabý JSON içeriði (tek satýr)
+- `WEB_PUSH_PUBLIC_KEY`
+- `WEB_PUSH_PRIVATE_KEY`
+- `WEB_PUSH_SUBJECT` (ör: `mailto:you@example.com`)
+
+### Cron
+
+`.github/workflows/reminder-cron.yml` her 5 dakikada bir çalýþýr ve:
+
+- `reminderSchedules` koleksiyonunu okur
+- Saati gelen ilaçlarý bulur
+- `pushSubscriptions` kaydý olan kullanýcýlara push yollar
+- Tekrar gönderimi önlemek için `notificationDispatchLog` yazar
+
+## Veri Akýþý
+
+- Ýstemci izin verince Web Push aboneliði `pushSubscriptions` koleksiyonuna yazýlýr.
+- Ýlaçlar deðiþince program `reminderSchedules` koleksiyonuna senkronlanýr.
+- GitHub cron saati gelen ilaçlarý bulur ve push gönderir.
+- Bildirim aksiyonlarý (`Ýçtim`, `Atla`, `Hatýrlat`) uygulamada log'a iþlenir.
 
 ## Not
 
-- iOS PWA tarafÄ±nda bildirim davranÄ±ÅŸÄ± Apple limitlerine baÄŸlÄ±dÄ±r.
-- KapalÄ± ekranda gÃ¼venilir bildirim iÃ§in sunucu tarafÄ± push zorunludur.
+- iOS'ta push için uygulama Safari'den ana ekrana eklenmiþ olmalý.
+- Kapalý ekran bildirimi için sunucu tarafý push zorunludur.
