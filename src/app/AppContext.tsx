@@ -82,20 +82,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage & Register Service Worker
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     try {
       const storedUser = localStorage.getItem('lit_user');
-      const storedMeds = localStorage.getItem('lit_medicines');
-      const storedLogs = localStorage.getItem('lit_daily_logs');
-      const storedUsersList = localStorage.getItem('lit_all_users');
-
       if (storedUser) setUser(JSON.parse(storedUser));
+    } catch {
+      localStorage.removeItem('lit_user');
+    }
+
+    try {
+      const storedMeds = localStorage.getItem('lit_medicines');
       if (storedMeds) setAllMedicines(JSON.parse(storedMeds));
+    } catch {
+      localStorage.removeItem('lit_medicines');
+    }
+
+    try {
+      const storedLogs = localStorage.getItem('lit_daily_logs');
       if (storedLogs) setAllDailyLogs(JSON.parse(storedLogs));
+    } catch {
+      localStorage.removeItem('lit_daily_logs');
+    }
+
+    try {
+      const storedUsersList = localStorage.getItem('lit_all_users');
       if (storedUsersList) setAllUsers(JSON.parse(storedUsersList));
-    } catch {}
+    } catch {
+      localStorage.removeItem('lit_all_users');
+    }
 
     // Register Service Worker for PWA
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then((reg) => {
           console.log('SW Registered:', reg.scope);

@@ -68,11 +68,16 @@ html {
 */
 body::before {
   /* If the file exists, use it as a subtle full-bleed background behind the fur pattern */
-  background-image: url('/images/leopar-desen-dosemelik-kumas.jpg'),
+  background-image:
+    linear-gradient(rgba(26, 19, 8, 0.62), rgba(26, 19, 8, 0.62)),
+    url('/images/leopar-desen-dosemelik-kumas.jpg'),
     radial-gradient(ellipse 180px 80px at 10% 15%, rgba(200, 148, 62, 0.06) 0%, transparent 100%),
     radial-gradient(ellipse 120px 200px at 85% 25%, rgba(168, 120, 48, 0.05) 0%, transparent 100%);
-  background-size: cover, 180px 80px, 120px 200px;
-  background-position: center center, 10% 15%, 85% 25%;
+  background-size: cover, cover, 180px 80px, 120px 200px;
+  background-position: center center, center center, 10% 15%, 85% 25%;
+  background-blend-mode: overlay, normal, normal, normal;
+  opacity: 0.65;
+  filter: saturate(0.95) brightness(0.9);
 }
 
 body {
@@ -82,6 +87,8 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   position: relative;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
   /* Golden tawny fur base color */
   background: linear-gradient(
     175deg,
@@ -124,6 +131,11 @@ body::after {
 #__next, main {
   position: relative;
   z-index: 1;
+}
+
+.page-header {
+  padding-top: calc(18px + env(safe-area-inset-top));
+  padding-bottom: 14px;
 }
 
 /* ══════ SCROLLBAR ══════ */
