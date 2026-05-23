@@ -57,6 +57,20 @@ export default function DashboardPage() {
   const pending = total - taken - skipped;
   const pct = total > 0 ? Math.round((taken / total) * 100) : 0;
   const today = new Date().toISOString().split('T')[0];
+  const nowMinutes = (() => {
+    const d = new Date();
+    return d.getHours() * 60 + d.getMinutes();
+  })();
+  const upcoming = logs
+    .filter((l) => l.status === 'pending')
+    .map((l) => {
+      const [h, m] = l.time.split(':').map(Number);
+      const t = h * 60 + m;
+      const delta = t >= nowMinutes ? t - nowMinutes : 1440 - nowMinutes + t;
+      return { ...l, delta };
+    })
+    .sort((a, b) => a.delta - b.delta)
+    .slice(0, 3);
 
   const r = 54;
   const circ = 2 * Math.PI * r;
@@ -137,7 +151,7 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {logs.length === 0 ? (
+          {upcoming.length === 0 ? (
             <div className="glass-card" style={{ padding: '32px', textAlign: 'center' }}>
               <div style={{ fontSize: '40px', marginBottom: '12px' }}>💊</div>
               <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Bugün için ilaç yok.</p>
@@ -149,7 +163,7 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {logs.filter((l) => l.status !== 'taken').map((log, i) => (
+              {upcoming.map((log, i) => (
                 <div
                   key={`${log.medicine.id}-${log.time}`}
                   className="glass-card animate-fade-in-up"
