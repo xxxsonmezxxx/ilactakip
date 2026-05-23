@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { db } from '@/services/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export type FoodInstruction = 'Aç' | 'Tok' | 'Farketmez';
 export type ReminderType = 'Alarm' | 'Bildirim' | 'İkisi de';
@@ -91,6 +91,7 @@ const PILL_COLORS = [
 ];
 
 const normalizeEmail = (value?: string | null) => (value ?? '').trim().toLowerCase();
+const safeEmailId = (email: string) => normalizeEmail(email).replace(/\./g, ',');
 
 function normalizeDay(day: string): DayKey {
   if (day === 'Ã‡ar') return 'Çar';
@@ -197,6 +198,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [user, loaded]);
 
   useEffect(() => {
+    if (!loaded || !db || !user || user.isAdmin) return;
+    const email = normalizeEmail(user.email);
+    if (!email) return;
+
+    getDoc(doc(db, 'userProfiles', safeEmailId(email)))
+      .then((snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data() as { medicines?: MedicineRecord[]; dailyLogs?: DailyLog[] };
+        const cloudMeds = (data.medicines ?? []).filter((m) => normalizeEmail(m.userEmail) === email);
+        const cloudLogs = (data.dailyLogs ?? []).filter((l) => normalizeEmail(l.userEmail) === email);
+
+        if (cloudMeds.length) {
+          setAllMedicines((prev) => {
+            const others = prev.filter((m) => normalizeEmail(m.userEmail) !== email);
+            return [...others, ...cloudMeds];
+          });
+        }
+        if (cloudLogs.length) {
+          setAllDailyLogs((prev) => {
+            const others = prev.filter((l) => normalizeEmail(l.userEmail) !== email);
+            return [...others, ...cloudLogs];
+          });
+        }
+      })
+      .catch(() => {});
+  }, [loaded, user]);
+
+  useEffect(() => {
     if (!loaded) return;
     localStorage.setItem('lit_medicines', JSON.stringify(allMedicines));
 
@@ -212,7 +241,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (db && user && !user.isAdmin) {
       const email = normalizeEmail(user.email);
       if (email) {
-        const safeId = email.replace(/\./g, ',');
+        const safeId = safeEmailId(email);
         const data = allMedicines
           .filter((m) => normalizeEmail(m.userEmail) === email)
           .map((m) => ({
@@ -238,9 +267,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
           },
           { merge: true }
         ).catch(() => {});
+
+        const profileMedicines = allMedicines.filter((m) => normalizeEmail(m.userEmail) === email);
+        const profileLogs = allDailyLogs.filter((l) => normalizeEmail(l.userEmail) === email);
+        setDoc(
+          doc(db, 'userProfiles', safeId),
+          {
+            email,
+            medicines: profileMedicines,
+            dailyLogs: profileLogs,
+            updatedAt: new Date().toISOString(),
+          },
+          { merge: true }
+        ).catch(() => {});
       }
     }
-  }, [allMedicines, loaded, user, medicines]);
+  }, [allMedicines, allDailyLogs, loaded, user, medicines]);
 
   useEffect(() => {
     if (!loaded) return;
