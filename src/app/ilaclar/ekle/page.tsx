@@ -14,7 +14,8 @@ const PILL_LABELS: Record<string, string> = {
   'pill-amber': 'ğŸŸ¡',
   'pill-purple': 'ğŸŸ£',
   'pill-teal': 'ğŸ©µ',
-    'pill-indigo': '🔵',
+  'pill-pink': 'ğŸ©·',
+  'pill-indigo': '🔵',
   'pill-orange': '🟠',
   'pill-cyan': '🩵',
 };
