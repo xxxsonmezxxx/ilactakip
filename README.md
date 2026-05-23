@@ -51,6 +51,21 @@ inkscape -w 512 -h 512 icons/icon.svg --export-type=png --export-filename=public
 
 - PNG dosyalarını ekledikten sonra değişiklikleri commit ve push edin; Vercel otomatik deploy başlatacaktır.
 
+## Arka plan görseli
+
+- Eğer ekli resim gibi bir arka plan isterseniz, `public/images/leopard-bg.jpg` dosyasını repo'ya ekleyin.
+- `src/app/globals.css` bu dosyayı otomatik olarak arar ve mevcut leopar deseniyle harmanlayarak gösterir.
+
+## GitHub → Vercel otomatik deploy (opsiyonel)
+
+- Projeye bir GitHub Actions workflow eklendi: `.github/workflows/deploy-to-vercel.yml`.
+- Bu workflow çalışması için GitHub repo secrets içine şu değerleri eklemeniz gerekiyor:
+   - `VERCEL_TOKEN` — Kişisel Vercel token (Vercel dashboard > Settings > Tokens)
+   - `VERCEL_ORG_ID` — Vercel organization id
+   - `VERCEL_PROJECT_ID` — Vercel project id
+
+Alternatif olarak Vercel dashboard üzerinden doğrudan GitHub bağlantısı yapıp otomatik deploy'u etkinleştirebilirsiniz (daha basit).
+
 
 ### Firebase Cloud Messaging (FCM) hızlı notlar
 
