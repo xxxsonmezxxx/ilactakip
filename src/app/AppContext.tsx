@@ -59,6 +59,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 const PILL_COLORS = ['pill-red', 'pill-blue', 'pill-green', 'pill-amber', 'pill-purple', 'pill-teal', 'pill-pink'];
+const normalizeEmail = (value?: string | null) => (value ?? '').trim().toLowerCase();
 
 function getToday(): string {
   return new Date().toISOString().split('T')[0];
@@ -77,8 +78,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [loaded, setLoaded] = useState(false);
 
   // Derived state based on user
-  const medicines = user?.isAdmin ? allMedicines : allMedicines.filter(m => m.userEmail === user?.email);
-  const dailyLogs = user?.isAdmin ? allDailyLogs : allDailyLogs.filter(l => l.userEmail === user?.email);
+  const medicines = user?.isAdmin ? allMedicines : allMedicines.filter(m => normalizeEmail(m.userEmail) === normalizeEmail(user?.email));
+  const dailyLogs = user?.isAdmin ? allDailyLogs : allDailyLogs.filter(l => normalizeEmail(l.userEmail) === normalizeEmail(user?.email));
 
   // Load from localStorage & Register Service Worker
   useEffect(() => {
@@ -167,10 +168,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setUser(u);
       return;
     }
-    setUser(u);
+    const normalizedUser = { ...u, email: normalizeEmail(u.email) };
+    setUser(normalizedUser);
     setAllUsers(prev => {
-      if (prev.some(p => p.email === u.email)) return prev;
-      return [...prev, u];
+      if (prev.some(p => normalizeEmail(p.email) === normalizeEmail(normalizedUser.email))) return prev;
+      return [...prev, normalizedUser];
     });
   }, []);
   const logout = useCallback(() => {
@@ -185,7 +187,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       id: Date.now().toString(),
       createdAt: new Date().toISOString(),
       taken: {},
-      userEmail: user.email,
+      userEmail: normalizeEmail(user.email),
     };
     setAllMedicines(prev => [...prev, newMed]);
 
@@ -212,7 +214,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
     setAllDailyLogs(prev => {
       const existing = prev.findIndex(l => l.medicineId === medicineId && l.scheduleTime === scheduleTime && l.date === date);
-      const log: DailyLog = { medicineId, scheduleTime, date, status: 'taken', takenAt: new Date().toISOString(), userEmail: user.email };
+      const log: DailyLog = { medicineId, scheduleTime, date, status: 'taken', takenAt: new Date().toISOString(), userEmail: normalizeEmail(user.email) };
       if (existing >= 0) {
         const updated = [...prev];
         updated[existing] = log;
@@ -226,7 +228,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!user) return;
     setAllDailyLogs(prev => {
       const existing = prev.findIndex(l => l.medicineId === medicineId && l.scheduleTime === scheduleTime && l.date === date);
-      const log: DailyLog = { medicineId, scheduleTime, date, status: 'skipped', userEmail: user.email };
+      const log: DailyLog = { medicineId, scheduleTime, date, status: 'skipped', userEmail: normalizeEmail(user.email) };
       if (existing >= 0) {
         const updated = [...prev];
         updated[existing] = log;
@@ -241,7 +243,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const nextTime = next ?? new Date(Date.now() + 5 * 60000).toISOString();
     setAllDailyLogs(prev => {
       const existing = prev.findIndex(l => l.medicineId === medicineId && l.scheduleTime === scheduleTime && l.date === date);
-      const log: DailyLog = { medicineId, scheduleTime, date, status: 'snoozed', snoozeNext: nextTime, userEmail: user.email };
+      const log: DailyLog = { medicineId, scheduleTime, date, status: 'snoozed', snoozeNext: nextTime, userEmail: normalizeEmail(user.email) };
       if (existing >= 0) {
         const updated = [...prev];
         updated[existing] = { ...updated[existing], ...log };

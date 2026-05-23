@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -27,7 +27,7 @@ export default function LoginPage() {
 
     if (isAdminMode) {
       if (adminUser !== 'admin' || adminPass !== 'admin2026!') {
-        setError('Geçersiz yönetici bilgileri.');
+        setError('GeÃ§ersiz yÃ¶netici bilgileri.');
         return;
       }
       setLoading(true);
@@ -38,12 +38,12 @@ export default function LoginPage() {
       return;
     }
 
-    if (!name.trim()) { setError('Lütfen adınızı girin.'); return; }
-    if (!email.trim() || !email.includes('@')) { setError('Geçerli bir e-posta girin.'); return; }
+    if (!name.trim()) { setError('LÃ¼tfen adÄ±nÄ±zÄ± girin.'); return; }
+    if (!email.trim() || !email.includes('@')) { setError('GeÃ§erli bir e-posta girin.'); return; }
     
     setLoading(true);
     setTimeout(() => {
-      login({ name: name.trim(), email: email.trim() });
+      login({ name: name.trim(), email: email.trim().toLowerCase() });
       router.push('/dashboard');
     }, 600);
   }
@@ -68,7 +68,7 @@ export default function LoginPage() {
             boxShadow: '0 8px 32px rgba(212,162,74,0.35), 0 0 0 1px rgba(200,148,62,0.2)',
             position: 'relative', overflow: 'hidden',
           }}>
-            <span style={{ position: 'relative', zIndex: 1 }}>🐆</span>
+            <span style={{ position: 'relative', zIndex: 1 }}>ğŸ†</span>
             <div style={{
               position: 'absolute', inset: 0,
               background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)',
@@ -76,10 +76,10 @@ export default function LoginPage() {
           </div>
 
           <h1 style={{ fontSize: '28px', fontWeight: '900', letterSpacing: '-0.5px', marginBottom: '6px', background: 'linear-gradient(135deg, var(--gold-bright), var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Leoparlı İlaç Takibim
+            LeoparlÄ± Ä°laÃ§ Takibim
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-            L.İ.T — Sağlığın zamanı, ilacın ihmal edilmesin
+            L.Ä°.T â€” SaÄŸlÄ±ÄŸÄ±n zamanÄ±, ilacÄ±n ihmal edilmesin
           </p>
         </div>
 
@@ -87,9 +87,9 @@ export default function LoginPage() {
         <div className="glass-card leopard-border" style={{ padding: '32px 28px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
             <div>
-              <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '6px' }}>{isAdminMode ? 'Yönetici Girişi 🔐' : 'Hoş Geldiniz 👋'}</h2>
+              <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '6px' }}>{isAdminMode ? 'YÃ¶netici GiriÅŸi ğŸ”' : 'HoÅŸ Geldiniz ğŸ‘‹'}</h2>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                {isAdminMode ? 'Yönetim paneline erişmek için giriş yapın' : 'İlaç takibine başlamak için giriş yapın'}
+                {isAdminMode ? 'YÃ¶netim paneline eriÅŸmek iÃ§in giriÅŸ yapÄ±n' : 'Ä°laÃ§ takibine baÅŸlamak iÃ§in giriÅŸ yapÄ±n'}
               </p>
             </div>
             <button
@@ -98,7 +98,7 @@ export default function LoginPage() {
               className="btn-ghost"
               style={{ padding: '6px 10px', fontSize: '11px' }}
             >
-              {isAdminMode ? 'Kullanıcı' : 'Yönetici'}
+              {isAdminMode ? 'KullanÄ±cÄ±' : 'YÃ¶netici'}
             </button>
           </div>
 
@@ -107,7 +107,7 @@ export default function LoginPage() {
               <>
                 <div>
                   <label className="input-label">
-                    <span style={{ marginRight: '6px' }}>🔑</span> Kullanıcı Adı
+                    <span style={{ marginRight: '6px' }}>ğŸ”‘</span> KullanÄ±cÄ± AdÄ±
                   </label>
                   <input
                     type="text"
@@ -120,12 +120,12 @@ export default function LoginPage() {
                 </div>
                 <div>
                   <label className="input-label">
-                    <span style={{ marginRight: '6px' }}>🔒</span> Şifre
+                    <span style={{ marginRight: '6px' }}>ğŸ”’</span> Åifre
                   </label>
                   <input
                     type="password"
                     className="input-field"
-                    placeholder="••••••••"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     value={adminPass}
                     onChange={e => setAdminPass(e.target.value)}
                     disabled={loading}
@@ -136,13 +136,13 @@ export default function LoginPage() {
               <>
                 <div>
                   <label className="input-label">
-                    <span style={{ marginRight: '6px' }}>👤</span> Adınız Soyadınız
+                    <span style={{ marginRight: '6px' }}>ğŸ‘¤</span> AdÄ±nÄ±z SoyadÄ±nÄ±z
                   </label>
                   <input
                     id="login-name"
                     type="text"
                     className="input-field"
-                    placeholder="Örn: Ahmet Yılmaz"
+                    placeholder="Ã–rn: Ahmet YÄ±lmaz"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     autoComplete="name"
@@ -152,7 +152,7 @@ export default function LoginPage() {
 
                 <div>
                   <label className="input-label">
-                    <span style={{ marginRight: '6px' }}>📧</span> E-posta Adresiniz
+                    <span style={{ marginRight: '6px' }}>ğŸ“§</span> E-posta Adresiniz
                   </label>
                   <input
                     id="login-email"
@@ -174,7 +174,7 @@ export default function LoginPage() {
                 borderRadius: '10px', padding: '10px 14px', fontSize: '13px', color: '#F87171',
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}>
-                ⚠️ {error}
+                âš ï¸ {error}
               </div>
             )}
 
@@ -188,9 +188,9 @@ export default function LoginPage() {
               {loading ? (
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
                   <span style={{ width: '18px', height: '18px', border: '2px solid rgba(0,0,0,0.3)', borderTopColor: '#000', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
-                  Giriş yapılıyor...
+                  GiriÅŸ yapÄ±lÄ±yor...
                 </span>
-              ) : '🐆 Giriş Yap'}
+              ) : 'ğŸ† GiriÅŸ Yap'}
             </button>
           </form>
         </div>
@@ -198,9 +198,9 @@ export default function LoginPage() {
         {/* Features hint */}
         <div style={{ marginTop: '28px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', textAlign: 'center' }}>
           {[
-            { icon: '⏰', label: 'Akıllı Alarm' },
-            { icon: '🍽️', label: 'Aç/Tok Uyarı' },
-            { icon: '📊', label: 'Günlük Takip' },
+            { icon: 'â°', label: 'AkÄ±llÄ± Alarm' },
+            { icon: 'ğŸ½ï¸', label: 'AÃ§/Tok UyarÄ±' },
+            { icon: 'ğŸ“Š', label: 'GÃ¼nlÃ¼k Takip' },
           ].map(f => (
             <div key={f.label} style={{
               background: 'rgba(200,148,62,0.06)', border: '1px solid rgba(200,148,62,0.12)',
@@ -219,3 +219,4 @@ export default function LoginPage() {
     </main>
   );
 }
+
