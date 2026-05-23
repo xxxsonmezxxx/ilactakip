@@ -26,7 +26,7 @@ function getTodayDayKey(): DayKey {
 }
 
 export default function NotificationManager() {
-  const { user, medicines, markTaken } = useApp();
+  const { user, medicines, dailyLogs, markTaken, markSnoozed } = useApp();
   const notifiedRef = useRef<Set<string>>(new Set());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -146,7 +146,51 @@ export default function NotificationManager() {
     notifiedRef.current.forEach(key => {
       if (!key.startsWith(today)) notifiedRef.current.delete(key);
     });
-  }, [user, medicines]);
+
+    // Handle snoozed logs: notify if snoozeNext <= now
+    try {
+      const nowDate = new Date();
+      for (const log of dailyLogs.filter(l => l.status === 'snoozed')) {
+        if (!log.snoozeNext) continue;
+        const next = new Date(log.snoozeNext);
+        if (nowDate >= next) {
+          // find medicine
+          const med = medicines.find(m => m.id === log.medicineId);
+          if (!med) continue;
+
+          // play alarm if needed
+          if (med.reminderType === 'Alarm' || med.reminderType === 'İkisi de') playAlarmSound();
+
+          // show notification
+          const dosageMsg = med.dosage ? `\nDozaj: ${med.dosage}` : '';
+          const foodMsg = med.foodInstruction === 'Aç' ? '\n🌅 Aç karnına alın.'
+                        : med.foodInstruction === 'Tok' ? '\n🍽️ Tok karnına alın.' : '';
+
+          try {
+            new Notification(`🔔 Erteleme: ${med.name} — ${log.scheduleTime}`, {
+              body: `Hatırlatma tekrarlandı.${dosageMsg}${foodMsg}`,
+              icon: '/icons/icon-192x192.png',
+              tag: `snooze-${med.id}-${log.scheduleTime}-${log.date}`,
+              requireInteraction: true,
+            });
+          } catch {
+            navigator.serviceWorker?.ready.then(reg => {
+              reg.showNotification(`🔔 Erteleme: ${med.name} — ${log.scheduleTime}`, {
+                body: `Hatırlatma tekrarlandı.${dosageMsg}${foodMsg}`,
+                icon: '/icons/icon-192x192.png',
+                tag: `snooze-${med.id}-${log.scheduleTime}-${log.date}`,
+                requireInteraction: true,
+                vibrate: [300, 100, 300]
+              });
+            });
+          }
+
+          // schedule next snooze in 5 minutes
+          markSnoozed(log.medicineId, log.scheduleTime, log.date);
+        }
+      }
+    } catch (err) { console.warn('Snooze check failed', err); }
+  }, [user, medicines, dailyLogs, markSnoozed]);
 
   // Setup interval
   useEffect(() => {

@@ -32,8 +32,10 @@ export interface DailyLog {
   medicineId: string;
   scheduleTime: string;
   date: string; // YYYY-MM-DD
-  status: 'taken' | 'skipped' | 'pending';
+  status: 'taken' | 'skipped' | 'pending' | 'snoozed';
   takenAt?: string;
+  // when status is 'snoozed' this stores the next notification timestamp ISO
+  snoozeNext?: string;
   userEmail: string;
 }
 
@@ -49,7 +51,8 @@ interface AppContextType {
   deleteMedicine: (id: string) => void;
   markTaken: (medicineId: string, scheduleTime: string, date: string) => void;
   markSkipped: (medicineId: string, scheduleTime: string, date: string) => void;
-  getTodayLogs: () => { medicine: MedicineRecord; time: string; status: 'taken' | 'skipped' | 'pending' }[];
+  markSnoozed: (medicineId: string, scheduleTime: string, date: string, next?: string) => void;
+  getTodayLogs: () => { medicine: MedicineRecord; time: string; status: 'taken' | 'skipped' | 'pending' | 'snoozed' }[];
   getAllMedicines: () => MedicineRecord[]; // For admin
 }
 
@@ -215,6 +218,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const markSnoozed = useCallback((medicineId: string, scheduleTime: string, date: string, next?: string) => {
+    if (!user) return;
+    const nextTime = next ?? new Date(Date.now() + 5 * 60000).toISOString();
+    setAllDailyLogs(prev => {
+      const existing = prev.findIndex(l => l.medicineId === medicineId && l.scheduleTime === scheduleTime && l.date === date);
+      const log: DailyLog = { medicineId, scheduleTime, date, status: 'snoozed', snoozeNext: nextTime, userEmail: user.email };
+      if (existing >= 0) {
+        const updated = [...prev];
+        updated[existing] = { ...updated[existing], ...log };
+        return updated;
+      }
+      return [...prev, log];
+    });
+  }, [user]);
+
   const getTodayLogs = useCallback(() => {
     const today = getToday();
     const todayDay = todayDayKey();
@@ -245,7 +263,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     <AppContext.Provider value={{
       user, medicines, dailyLogs, allUsers,
       login, logout, addMedicine, updateMedicine, deleteMedicine,
-      markTaken, markSkipped, getTodayLogs, getAllMedicines
+      markTaken, markSkipped, markSnoozed, getTodayLogs, getAllMedicines
     }}>
       {children}
     </AppContext.Provider>

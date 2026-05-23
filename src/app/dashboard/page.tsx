@@ -44,7 +44,7 @@ const PILL_EMOJIS: Record<string, string> = {
 };
 
 export default function DashboardPage() {
-  const { user, getTodayLogs, markTaken, markSkipped, medicines } = useApp();
+  const { user, getTodayLogs, markTaken, markSkipped, markSnoozed, medicines } = useApp();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState('');
@@ -180,7 +180,7 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {logs.map((log, i) => (
+              {logs.filter(l => l.status !== 'taken').map((log, i) => (
                 <div key={`${log.medicine.id}-${log.time}`} className="glass-card animate-fade-in-up" style={{
                   padding: '16px', animationDelay: `${i * 0.05}s`,
                   opacity: 0, animationFillMode: 'forwards',
@@ -228,6 +228,14 @@ export default function DashboardPage() {
                         style={{ flex: 1, padding: '10px', fontSize: '13px' }}
                       >
                         ✕ Atla
+                      </button>
+                      <button
+                        id={`snooze-${log.medicine.id}-${log.time}`}
+                        onClick={() => markSnoozed(log.medicine.id, log.time, today)}
+                        className="btn-ghost"
+                        style={{ flex: 1, padding: '10px', fontSize: '13px' }}
+                      >
+                        💤 Ertele
                       </button>
                     </div>
                   )}

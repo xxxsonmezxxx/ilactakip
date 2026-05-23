@@ -28,7 +28,7 @@ function getStatusBadge(status: string) {
 }
 
 export default function IlaclarimPage() {
-  const { user, medicines, deleteMedicine, getTodayLogs, markTaken, markSkipped } = useApp();
+  const { user, medicines, deleteMedicine, getTodayLogs, markTaken, markSkipped, markSnoozed } = useApp();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<'bugun' | 'tumü'>('bugun');
@@ -74,10 +74,10 @@ export default function IlaclarimPage() {
 
       <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {activeTab === 'bugun' ? (
-          logs.length === 0 ? (
+          logs.filter(l => l.status !== 'taken').length === 0 ? (
             <EmptyState />
           ) : (
-            logs.map((log, i) => (
+            logs.filter(l => l.status !== 'taken').map((log, i) => (
               <div key={`${log.medicine.id}-${log.time}`} className="glass-card animate-fade-in-up" style={{
                 padding: '16px', animationDelay: `${i * 0.05}s`, opacity: 0, animationFillMode: 'forwards',
               }}>
@@ -113,6 +113,9 @@ export default function IlaclarimPage() {
                     </button>
                     <button onClick={() => markSkipped(log.medicine.id, log.time, today)} className="btn-ghost" style={{ flex: 1, padding: '10px', fontSize: '13px' }}>
                       ✕ Atla
+                    </button>
+                    <button onClick={() => markSnoozed(log.medicine.id, log.time, today)} className="btn-ghost" style={{ flex: 1, padding: '10px', fontSize: '13px' }}>
+                      💤 Ertele
                     </button>
                   </div>
                 )}
