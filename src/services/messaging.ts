@@ -1,4 +1,4 @@
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
 import { db, auth } from './firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
@@ -7,11 +7,22 @@ export async function registerForPush(vapidKey?: string) {
   if (!('Notification' in window)) return null;
 
   try {
+    // Check if messaging is supported in this browser first
+    const supported = await isSupported();
+    if (!supported) return null;
+    if (!db || !auth) return null;
+
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') return null;
 
     const messaging = getMessaging();
-    const token = await getToken(messaging, { vapidKey: vapidKey || (process.env.NEXT_PUBLIC_VAPID_KEY as string) });
+    const key = vapidKey || process.env.NEXT_PUBLIC_VAPID_KEY || '';
+    if (!key) {
+      console.warn('VAPID_KEY not configured, skipping push registration');
+      return null;
+    }
+
+    const token = await getToken(messaging, { vapidKey: key });
     if (!token) return null;
 
     // Save token to Firestore under users/{uid}/fcmTokens/{token}
@@ -30,7 +41,7 @@ export async function registerForPush(vapidKey?: string) {
 
     return token;
   } catch (err) {
-    console.error('registerForPush error', err);
+    console.error('registerForPush error (non-critical):', err);
     return null;
   }
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { db } from "@/services/firebase";
@@ -15,6 +15,13 @@ export default function MedicineForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (!db) {
+      setError("Bulut bağlantısı yok. Firebase ayarlarını kontrol et.");
+      setStatus("error");
+      return;
+    }
+
     if (!name.trim()) {
       setError("İlaç adı gereklidir.");
       return;

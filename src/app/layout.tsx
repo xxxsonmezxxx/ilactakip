@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { AppProvider } from "./AppContext";
 import NotificationManager from "@/components/NotificationManager";
@@ -15,12 +15,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Leoparlı İlaç Takibim",
-  description: "Akıllı ilaç takip ve hatırlatma uygulaması — L.İ.T",
+  description: "Akıllı ilaç takip ve hatırlatma uygulaması",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "L.İ.T",
+    title: "İlaç Takip",
   },
 };
 
@@ -32,17 +32,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-touch-icon-152.png" />
         <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-touch-icon-120.png" />
         <link rel="apple-touch-icon-precomposed" href="/icons/apple-touch-icon.png" />
-        <link rel="mask-icon" href="/icons/maskable-icon.svg" color="#D97706" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="L.İ.T" />
+        <meta name="apple-mobile-web-app-title" content="İlaç Takip" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body>
         <AppProvider>

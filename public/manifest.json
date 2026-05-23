@@ -1,11 +1,13 @@
-{
+﻿{
   "name": "Leoparlı İlaç Takibim",
-  "short_name": "L.İ.T",
+  "short_name": "İlaçTakip",
   "description": "Leoparlı ilaç takip ve hatırlatma uygulaması",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#D97706",
+  "display_override": ["standalone", "window-controls-overlay"],
+  "background_color": "#1a1308",
+  "theme_color": "#1a1308",
   "orientation": "portrait",
   "lang": "tr",
   "icons": [

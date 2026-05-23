@@ -1,15 +1,15 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
-/* ═══════════════════════════════════════════════
-   LEOPARD FUR THEME — Real leopard color palette
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   LEOPARD FUR THEME â€” Real leopard color palette
    Base: Tawny golden fur #C8943E / #B8842E
    Spots: Dark brown/black rosettes
    Text: Cream white for readability
-   ═══════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 :root {
   /* Leopard fur base tones */
@@ -38,7 +38,7 @@
   --gold-dark: #A87830;
   --gold-glow: rgba(212, 162, 74, 0.2);
 
-  /* Text — cream palette for readability on fur */
+  /* Text â€” cream palette for readability on fur */
   --text-primary: #F5EDE0;
   --text-secondary: #C8B898;
   --text-muted: #8A7A60;
@@ -63,23 +63,6 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Optional image background: place your leopard background at /public/images/leopard-bg.jpg
-   The file is not committed by default; add it to the repo to enable the photographic background.
-*/
-body::before {
-  /* If the file exists, use it as a subtle full-bleed background behind the fur pattern */
-  background-image:
-    linear-gradient(rgba(26, 19, 8, 0.62), rgba(26, 19, 8, 0.62)),
-    url('/images/leopar-desen-dosemelik-kumas.jpg'),
-    radial-gradient(ellipse 180px 80px at 10% 15%, rgba(200, 148, 62, 0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 120px 200px at 85% 25%, rgba(168, 120, 48, 0.05) 0%, transparent 100%);
-  background-size: cover, cover, 180px 80px, 120px 200px;
-  background-position: center center, center center, 10% 15%, 85% 25%;
-  background-blend-mode: overlay, normal, normal, normal;
-  opacity: 0.65;
-  filter: saturate(0.95) brightness(0.9);
-}
-
 body {
   font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
@@ -90,42 +73,26 @@ body {
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
   /* Golden tawny fur base color */
-  background: linear-gradient(
-    175deg,
-    #2A1E0E 0%,
-    #1a1308 20%,
-    #221a0e 50%,
-    #1a1308 80%,
-    #2A1E0E 100%
-  );
+  background: #1a1308;
 }
 
-/* ══════ LEOPARD FUR PATTERN (Layer 1: golden highlights) ══════ */
+/* Full-screen leopard background image */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image:
-    /* Subtle golden fur streaks */
-    radial-gradient(ellipse 180px 80px at 10% 15%, rgba(200, 148, 62, 0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 120px 200px at 85% 25%, rgba(168, 120, 48, 0.05) 0%, transparent 100%),
-    radial-gradient(ellipse 200px 100px at 50% 70%, rgba(200, 148, 62, 0.04) 0%, transparent 100%),
-    radial-gradient(ellipse 150px 150px at 25% 90%, rgba(168, 120, 48, 0.05) 0%, transparent 100%),
-    radial-gradient(ellipse 180px 120px at 75% 55%, rgba(200, 148, 62, 0.04) 0%, transparent 100%);
+  background-image: linear-gradient(rgba(16, 10, 4, 0.45), rgba(16, 10, 4, 0.45)), url('/images/leopar-desen-dosemelik-kumas.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  filter: saturate(1) contrast(1.02);
   pointer-events: none;
   z-index: 0;
 }
 
-/* ══════ LEOPARD ROSETTES (Layer 2: realistic spot pattern) ══════ */
 body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3Cstyle%3E.r{fill:none;stroke:%234A3218;stroke-width:1.5;opacity:0.35}.c{fill:%232E1F0E;opacity:0.3}%3C/style%3E%3C/defs%3E%3C!-- Rosette 1 --%3E%3Cellipse class='r' cx='35' cy='30' rx='14' ry='11'/%3E%3Ccircle class='c' cx='35' cy='30' r='4'/%3E%3C!-- Rosette 2 --%3E%3Cellipse class='r' cx='100' cy='25' rx='12' ry='13'/%3E%3Ccircle class='c' cx='100' cy='25' r='3.5'/%3E%3C!-- Rosette 3 --%3E%3Cellipse class='r' cx='160' cy='40' rx='15' ry='10'/%3E%3Ccircle class='c' cx='160' cy='40' r='4'/%3E%3C!-- Rosette 4 --%3E%3Cellipse class='r' cx='65' cy='80' rx='13' ry='14'/%3E%3Ccircle class='c' cx='65' cy='80' r='4'/%3E%3C!-- Rosette 5 --%3E%3Cellipse class='r' cx='135' cy='90' rx='11' ry='12'/%3E%3Ccircle class='c' cx='135' cy='90' r='3'/%3E%3C!-- Rosette 6 --%3E%3Cellipse class='r' cx='25' cy='130' rx='12' ry='11'/%3E%3Ccircle class='c' cx='25' cy='130' r='3.5'/%3E%3C!-- Rosette 7 --%3E%3Cellipse class='r' cx='90' cy='140' rx='14' ry='12'/%3E%3Ccircle class='c' cx='90' cy='140' r='4'/%3E%3C!-- Rosette 8 --%3E%3Cellipse class='r' cx='170' cy='130' rx='13' ry='14'/%3E%3Ccircle class='c' cx='170' cy='130' r='3.5'/%3E%3C!-- Rosette 9 --%3E%3Cellipse class='r' cx='50' cy='180' rx='11' ry='10'/%3E%3Ccircle class='c' cx='50' cy='180' r='3'/%3E%3C!-- Rosette 10 --%3E%3Cellipse class='r' cx='130' cy='175' rx='12' ry='11'/%3E%3Ccircle class='c' cx='130' cy='175' r='3.5'/%3E%3C!-- Small solid spots --%3E%3Ccircle class='c' cx='10' cy='60' r='2.5'/%3E%3Ccircle class='c' cx='75' cy='50' r='2'/%3E%3Ccircle class='c' cx='185' cy='75' r='2.5'/%3E%3Ccircle class='c' cx='115' cy='55' r='2'/%3E%3Ccircle class='c' cx='45' cy='110' r='2'/%3E%3Ccircle class='c' cx='155' cy='165' r='2'/%3E%3Ccircle class='c' cx='80' cy='10' r='2'/%3E%3Ccircle class='c' cx='190' cy='155' r='2'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  opacity: 1;
-  pointer-events: none;
-  z-index: 0;
+  content: none;
 }
 
 #__next, main {
@@ -138,12 +105,12 @@ body::after {
   padding-bottom: 14px;
 }
 
-/* ══════ SCROLLBAR ══════ */
+/* â•â•â•â•â•â• SCROLLBAR â•â•â•â•â•â• */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--fur-tawny); border-radius: 4px; }
 
-/* ══════ GLASS CARD ══════ */
+/* â•â•â•â•â•â• GLASS CARD â•â•â•â•â•â• */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -155,7 +122,7 @@ body::after {
     inset 0 1px 0 rgba(200, 148, 62, 0.08);
 }
 
-/* ══════ GOLD BUTTON ══════ */
+/* â•â•â•â•â•â• GOLD BUTTON â•â•â•â•â•â• */
 .btn-amber {
   background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 40%, var(--gold-dark) 100%);
   color: var(--fur-darkest);
@@ -203,7 +170,7 @@ body::after {
   border-color: rgba(200, 148, 62, 0.4);
 }
 
-/* ══════ INPUT ══════ */
+/* â•â•â•â•â•â• INPUT â•â•â•â•â•â• */
 .input-field {
   width: 100%;
   background: rgba(26, 19, 8, 0.9);
@@ -226,7 +193,7 @@ body::after {
   color: var(--text-muted);
 }
 
-/* ══════ LABEL ══════ */
+/* â•â•â•â•â•â• LABEL â•â•â•â•â•â• */
 .input-label {
   display: block;
   font-size: 13px;
@@ -236,7 +203,7 @@ body::after {
   letter-spacing: 0.02em;
 }
 
-/* ══════ BADGES ══════ */
+/* â•â•â•â•â•â• BADGES â•â•â•â•â•â• */
 .badge-tok {
   background: rgba(91, 192, 222, 0.15);
   color: #7DD3E8;
@@ -287,7 +254,7 @@ body::after {
   font-weight: 700;
 }
 
-/* ══════ NAV ══════ */
+/* â•â•â•â•â•â• NAV â•â•â•â•â•â• */
 .nav-tab {
   display: flex;
   flex-direction: column;
@@ -314,7 +281,7 @@ body::after {
   background: rgba(255,255,255,0.03);
 }
 
-/* ══════ BOTTOM NAV ══════ */
+/* â•â•â•â•â•â• BOTTOM NAV â•â•â•â•â•â• */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -330,12 +297,12 @@ body::after {
   z-index: 100;
 }
 
-/* ══════ PROGRESS RING ══════ */
+/* â•â•â•â•â•â• PROGRESS RING â•â•â•â•â•â• */
 .progress-ring {
   transform: rotate(-90deg);
 }
 
-/* ══════ MEDICINE ITEM ══════ */
+/* â•â•â•â•â•â• MEDICINE ITEM â•â•â•â•â•â• */
 .medicine-item {
   display: flex;
   align-items: center;
@@ -354,7 +321,7 @@ body::after {
   transform: translateX(2px);
 }
 
-/* ══════ PILL COLORS ══════ */
+/* â•â•â•â•â•â• PILL COLORS â•â•â•â•â•â• */
 .pill-red { background: linear-gradient(135deg, #D9534F, #C9302C); }
 .pill-blue { background: linear-gradient(135deg, #5BC0DE, #31B0D5); }
 .pill-green { background: linear-gradient(135deg, #5CB85C, #449D44); }
@@ -363,7 +330,7 @@ body::after {
 .pill-teal { background: linear-gradient(135deg, #1ABC9C, #16A085); }
 .pill-pink { background: linear-gradient(135deg, #E74C8E, #C9246B); }
 
-/* ══════ LEOPARD BORDER ══════ */
+/* â•â•â•â•â•â• LEOPARD BORDER â•â•â•â•â•â• */
 .leopard-border {
   border: 1px solid transparent;
   background:
@@ -371,7 +338,7 @@ body::after {
     linear-gradient(135deg, rgba(200,148,62,0.5), rgba(74,50,24,0.3), rgba(200,148,62,0.5)) border-box;
 }
 
-/* ══════ ANIMATIONS ══════ */
+/* â•â•â•â•â•â• ANIMATIONS â•â•â•â•â•â• */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -401,7 +368,7 @@ body::after {
 .animate-fade-in-up { animation: fadeInUp 0.4s ease forwards; }
 .animate-pulse-amber { animation: pulse-amber 2s ease infinite; }
 
-/* ══════ SELECT ══════ */
+/* â•â•â•â•â•â• SELECT â•â•â•â•â•â• */
 select.input-field {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4A24A' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -410,7 +377,7 @@ select.input-field {
   padding-right: 36px;
 }
 
-/* ══════ TOGGLE ══════ */
+/* â•â•â•â•â•â• TOGGLE â•â•â•â•â•â• */
 .toggle-wrapper {
   position: relative;
   width: 50px;
@@ -454,7 +421,7 @@ select.input-field {
   transform: translateX(22px);
 }
 
-/* ══════ DAY CHIP ══════ */
+/* â•â•â•â•â•â• DAY CHIP â•â•â•â•â•â• */
 .day-chip {
   width: 36px;
   height: 36px;
@@ -478,7 +445,7 @@ select.input-field {
   box-shadow: 0 2px 8px rgba(212, 162, 74, 0.4);
 }
 
-/* ══════ STATS RING ══════ */
+/* â•â•â•â•â•â• STATS RING â•â•â•â•â•â• */
 .stats-circle {
   position: relative;
   display: inline-flex;
@@ -486,7 +453,7 @@ select.input-field {
   justify-content: center;
 }
 
-/* ══════ FOOD CHIP ══════ */
+/* â•â•â•â•â•â• FOOD CHIP â•â•â•â•â•â• */
 .food-chip {
   flex: 1;
   padding: 10px;
@@ -511,7 +478,7 @@ select.input-field {
   color: var(--gold-light);
 }
 
-/* ══════ TIME CHIP ══════ */
+/* â•â•â•â•â•â• TIME CHIP â•â•â•â•â•â• */
 .time-chip {
   display: flex;
   align-items: center;
@@ -525,7 +492,7 @@ select.input-field {
   color: var(--gold-light);
 }
 
-/* ══════ NOTIFICATION BANNER ══════ */
+/* â•â•â•â•â•â• NOTIFICATION BANNER â•â•â•â•â•â• */
 .notification-banner {
   background: rgba(200, 148, 62, 0.1);
   border: 1px solid rgba(200, 148, 62, 0.3);
@@ -536,7 +503,7 @@ select.input-field {
   gap: 10px;
 }
 
-/* ══════ PAGE HEADER ══════ */
+/* â•â•â•â•â•â• PAGE HEADER â•â•â•â•â•â• */
 .page-header {
   display: flex;
   align-items: center;
@@ -555,20 +522,21 @@ button, input, textarea, select {
   font: inherit;
 }
 
-/* ══════ SAFE AREA ══════ */
+/* â•â•â•â•â•â• SAFE AREA â•â•â•â•â•â• */
 .page-content {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* ══════ GLOW ══════ */
+/* â•â•â•â•â•â• GLOW â•â•â•â•â•â• */
 .glow-amber {
   box-shadow: 0 0 20px rgba(212, 162, 74, 0.3), 0 0 60px rgba(212, 162, 74, 0.1);
 }
 
-/* ══════ SPOT DECORATIVE ══════ */
+/* â•â•â•â•â•â• SPOT DECORATIVE â•â•â•â•â•â• */
 .spot {
   position: absolute;
   border-radius: 50%;
   background: rgba(200, 148, 62, 0.05);
   pointer-events: none;
 }
+
