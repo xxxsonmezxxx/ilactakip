@@ -35,6 +35,23 @@ Next.js tabanlı temel ilaç takip uygulaması.
 - Web push / bildirim servisleri için Firebase Cloud Messaging ekleyin
 - Vercel üzerinde deploy ayarlarını yapın
 
+### iOS / PWA ikonları (Add to Home Screen için)
+
+- iOS ana ekrana ekleme deneyimi için `public/icons` içinde PNG ikonlar gereklidir.
+- Önerilen dosyalar ve isimleri:
+   - `public/icons/icon-192x192.png`
+   - `public/icons/icon-512x512.png`
+   - (isteğe bağlı) `public/icons/icon-180x180.png` (Apple için)
+- Basitçe bir SVG'den PNG üretmek için `inkscape` veya çevrimiçi araçlar kullanabilirsiniz. Örnek komut (Inkscape):
+
+```bash
+inkscape -w 192 -h 192 icons/icon.svg --export-type=png --export-filename=public/icons/icon-192x192.png
+inkscape -w 512 -h 512 icons/icon.svg --export-type=png --export-filename=public/icons/icon-512x512.png
+```
+
+- PNG dosyalarını ekledikten sonra değişiklikleri commit ve push edin; Vercel otomatik deploy başlatacaktır.
+
+
 ### Firebase Cloud Messaging (FCM) hızlı notlar
 
 - Firebase konsolunda proje oluşturun ve `Web` uygulaması ekleyin.
