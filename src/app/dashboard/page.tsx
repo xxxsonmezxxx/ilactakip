@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useApp } from '../AppContext';
 import BottomNav from '@/components/ui/BottomNav';
 
-const TURKISH_DAYS = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-const TURKISH_MONTHS = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+const TURKISH_DAYS = ['Pazar', 'Pazartesi', 'SalÄ±', 'Ã‡arÅŸamba', 'PerÅŸembe', 'Cuma', 'Cumartesi'];
+const TURKISH_MONTHS = ['Ocak', 'Åubat', 'Mart', 'Nisan', 'MayÄ±s', 'Haziran', 'Temmuz', 'AÄŸustos', 'EylÃ¼l', 'Ekim', 'KasÄ±m', 'AralÄ±k'];
 
 function getDateStr() {
   const d = new Date();
@@ -16,32 +16,32 @@ function getDateStr() {
 
 function getGreeting(name: string) {
   const h = new Date().getHours();
-  if (h < 12) return `Günaydın, ${name.split(' ')[0]}! ☀️`;
-  if (h < 18) return `İyi günler, ${name.split(' ')[0]}! 🌤️`;
-  return `İyi akşamlar, ${name.split(' ')[0]}! 🌙`;
+  if (h < 12) return `GÃ¼naydÄ±n, ${name.split(' ')[0]}! â˜€ï¸`;
+  if (h < 18) return `Ä°yi gÃ¼nler, ${name.split(' ')[0]}! ğŸŒ¤ï¸`;
+  return `Ä°yi akÅŸamlar, ${name.split(' ')[0]}! ğŸŒ™`;
 }
 
 function getFoodBadge(fi: string) {
-  if (fi === 'Aç') return <span className="badge-ac">Aç karnına</span>;
-  if (fi === 'Tok') return <span className="badge-tok">Tok karnına</span>;
+  if (fi === 'AÃ§') return <span className="badge-ac">AÃ§ karnÄ±na</span>;
+  if (fi === 'Tok') return <span className="badge-tok">Tok karnÄ±na</span>;
   return <span className="badge-any">Farketmez</span>;
 }
 
 function getStatusBadge(status: string) {
-  if (status === 'taken') return <span className="badge-alindi">✓ Alındı</span>;
-  if (status === 'skipped') return <span className="badge-atlandi">✕ Atlandı</span>;
-  if (status === 'snoozed') return <span className="badge-any">💤 Ertelendi</span>;
+  if (status === 'taken') return <span className="badge-alindi">âœ“ AlÄ±ndÄ±</span>;
+  if (status === 'skipped') return <span className="badge-atlandi">âœ• AtlandÄ±</span>;
+  if (status === 'snoozed') return <span className="badge-any">ğŸ’¤ Ertelendi</span>;
   return <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Bekliyor</span>;
 }
 
 const PILL_EMOJIS: Record<string, string> = {
-  'pill-red': '🔴',
-  'pill-blue': '🔵',
-  'pill-green': '🟢',
-  'pill-amber': '🟡',
-  'pill-purple': '🟣',
-  'pill-teal': '🩵',
-  'pill-pink': '🩷',
+  'pill-red': 'ğŸ”´',
+  'pill-blue': 'ğŸ”µ',
+  'pill-green': 'ğŸŸ¢',
+  'pill-amber': 'ğŸŸ¡',
+  'pill-purple': 'ğŸŸ£',
+  'pill-teal': 'ğŸ©µ',
+  'pill-pink': 'ğŸ©·',
 };
 
 export default function DashboardPage() {
@@ -85,14 +85,14 @@ export default function DashboardPage() {
     <main style={{ minHeight: '100dvh', paddingBottom: '90px' }}>
       {/* Header */}
       <div style={{
-        background: 'rgba(8,8,8,0.92)', borderBottom: '1px solid rgba(217,119,6,0.15)',
+        background: 'rgba(255,255,255,0.82)', borderBottom: '1px solid var(--border-color)',
         backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
         padding: 'calc(16px + env(safe-area-inset-top)) 20px 14px', position: 'sticky', top: 0, zIndex: 50,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-              🐆 leoparliilactakibim
+              ğŸ† leoparliilactakibim
             </p>
             <h1 style={{ fontSize: '28px', fontWeight: '800', marginTop: '2px', letterSpacing: '0.02em' }}>
               {user.name.split(' ')[0].toUpperCase()}
@@ -107,8 +107,8 @@ export default function DashboardPage() {
               width: '38px', height: '38px', borderRadius: '50%',
               background: 'linear-gradient(135deg, #F59E0B, #D97706)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '16px', fontWeight: '800', color: '#080808',
-              boxShadow: '0 2px 10px rgba(217,119,6,0.4)',
+              fontSize: '16px', fontWeight: '800', color: '#1f2329',
+              boxShadow: '0 8px 20px rgba(176,133,67,0.25)',
             }}>
               {user.name[0].toUpperCase()}
             </div>
@@ -143,14 +143,14 @@ export default function DashboardPage() {
               alignItems: 'center', justifyContent: 'center',
             }}>
               <span style={{ fontSize: '26px', fontWeight: '800', color: 'var(--amber-light)' }}>%{pct}</span>
-              <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Bugünkü ilaçlar</span>
+              <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>BugÃ¼nkÃ¼ ilaÃ§lar</span>
             </div>
           </div>
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <StatRow icon="✅" label="İçildi" count={taken} color="var(--success)" />
-            <StatRow icon="⏳" label="Beklemede" count={pending} color="var(--warning)" />
-            <StatRow icon="❌" label="İçilmeyen" count={skipped} color="var(--danger)" />
+            <StatRow icon="âœ…" label="Ä°Ã§ildi" count={taken} color="var(--success)" />
+            <StatRow icon="â³" label="Beklemede" count={pending} color="var(--warning)" />
+            <StatRow icon="âŒ" label="Ä°Ã§ilmeyen" count={skipped} color="var(--danger)" />
           </div>
         </div>
 
@@ -163,19 +163,19 @@ export default function DashboardPage() {
         {/* Upcoming medicines */}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: '700' }}>📋 Yaklaşan İlaçlar</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: '700' }}>ğŸ“‹ YaklaÅŸan Ä°laÃ§lar</h2>
             <Link href="/ilaclarim" style={{ fontSize: '13px', color: 'var(--amber)', textDecoration: 'none' }}>
-              Tümünü gör →
+              TÃ¼mÃ¼nÃ¼ gÃ¶r â†’
             </Link>
           </div>
 
           {logs.length === 0 ? (
             <div className="glass-card" style={{ padding: '32px', textAlign: 'center' }}>
-              <div style={{ fontSize: '40px', marginBottom: '12px' }}>💊</div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Bugün için ilaç yok.</p>
+              <div style={{ fontSize: '40px', marginBottom: '12px' }}>ğŸ’Š</div>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>BugÃ¼n iÃ§in ilaÃ§ yok.</p>
               <Link href="/ilaclar/ekle">
                 <button className="btn-amber" style={{ marginTop: '16px', padding: '10px 24px', fontSize: '14px' }}>
-                  + İlaç Ekle
+                  + Ä°laÃ§ Ekle
                 </button>
               </Link>
             </div>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
                       fontSize: '22px', flexShrink: 0,
                       boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                     }}>
-                      💊
+                      ğŸ’Š
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
@@ -220,7 +220,7 @@ export default function DashboardPage() {
                         className="btn-amber"
                         style={{ flex: 1, padding: '10px', fontSize: '13px' }}
                       >
-                        ✓ İçtim
+                        âœ“ Ä°Ã§tim
                       </button>
                       <button
                         id={`skip-${log.medicine.id}-${log.time}`}
@@ -228,7 +228,7 @@ export default function DashboardPage() {
                         className="btn-ghost"
                         style={{ flex: 1, padding: '10px', fontSize: '13px' }}
                       >
-                        ✕ Atla
+                        âœ• Atla
                       </button>
                       <button
                         id={`snooze-${log.medicine.id}-${log.time}`}
@@ -236,7 +236,7 @@ export default function DashboardPage() {
                         className="btn-ghost"
                         style={{ flex: 1, padding: '10px', fontSize: '13px' }}
                       >
-                        💤 Ertele
+                        ğŸ’¤ Ertele
                       </button>
                     </div>
                   )}
@@ -267,7 +267,7 @@ export default function DashboardPage() {
               +
             </button>
           </Link>
-          <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>İlaç Ekle</p>
+          <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>Ä°laÃ§ Ekle</p>
         </div>
       </div>
 
@@ -316,13 +316,13 @@ function NotificationBanner() {
 
   return (
     <div className="notification-banner" style={{ cursor: 'pointer' }} onClick={request}>
-      <span style={{ fontSize: '22px' }}>🔔</span>
+      <span style={{ fontSize: '22px' }}>ğŸ””</span>
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--amber-light)' }}>Bildirimlere izin ver</div>
-        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>İlaç saatlerinde hatırlatma alın</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Ä°laÃ§ saatlerinde hatÄ±rlatma alÄ±n</div>
       </div>
       <button className="btn-amber" style={{ padding: '8px 14px', fontSize: '12px', whiteSpace: 'nowrap' }}>
-        İzin Ver
+        Ä°zin Ver
       </button>
     </div>
   );
@@ -362,20 +362,20 @@ function InstallBanner() {
         borderRadius: '14px', padding: '14px 16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: showIOSGuide ? '12px' : '0' }}>
-          <span style={{ fontSize: '22px' }}>📱</span>
+          <span style={{ fontSize: '22px' }}>ğŸ“±</span>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--amber-light)' }}>Ana Ekrana Ekle</div>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Uygulama olarak kullan</div>
           </div>
           <button onClick={() => setShowIOSGuide(!showIOSGuide)} className="btn-amber" style={{ padding: '8px 12px', fontSize: '12px' }}>
-            Nasıl?
+            NasÄ±l?
           </button>
-          <button onClick={() => setShow(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '18px', cursor: 'pointer', padding: '4px' }}>✕</button>
+          <button onClick={() => setShow(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '18px', cursor: 'pointer', padding: '4px' }}>âœ•</button>
         </div>
         {showIOSGuide && (
-          <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '10px', padding: '12px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            1. Safari'de <strong style={{ color: 'var(--amber-light)' }}>⬆️ Paylaş</strong> butonuna bas<br />
-            2. <strong style={{ color: 'var(--amber-light)' }}>"Ana Ekrana Ekle"</strong> seçeneğine dokun<br />
+          <div style={{ background: 'rgba(255,255,255,0.72)', borderRadius: '10px', padding: '12px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+            1. Safari'de <strong style={{ color: 'var(--amber-light)' }}>â¬†ï¸ PaylaÅŸ</strong> butonuna bas<br />
+            2. <strong style={{ color: 'var(--amber-light)' }}>"Ana Ekrana Ekle"</strong> seÃ§eneÄŸine dokun<br />
             3. <strong style={{ color: 'var(--amber-light)' }}>"Ekle"</strong> butonuna bas
           </div>
         )}
@@ -389,9 +389,9 @@ function InstallBanner() {
       borderRadius: '14px', padding: '14px 16px',
       display: 'flex', alignItems: 'center', gap: '10px',
     }}>
-      <span style={{ fontSize: '22px' }}>📲</span>
+      <span style={{ fontSize: '22px' }}>ğŸ“²</span>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--amber-light)' }}>Uygulamayı Yükle</div>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--amber-light)' }}>UygulamayÄ± YÃ¼kle</div>
         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Ana ekrana ekleyip uygulama gibi kullan</div>
       </div>
       <button
@@ -404,9 +404,10 @@ function InstallBanner() {
         }}
         className="btn-amber" style={{ padding: '8px 14px', fontSize: '12px', whiteSpace: 'nowrap' }}
       >
-        Yükle
+        YÃ¼kle
       </button>
-      <button onClick={() => setShow(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '18px', cursor: 'pointer', padding: '4px' }}>✕</button>
+      <button onClick={() => setShow(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '18px', cursor: 'pointer', padding: '4px' }}>âœ•</button>
     </div>
   );
 }
+
