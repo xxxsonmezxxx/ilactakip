@@ -11,16 +11,8 @@ function dayKey(date: Date) {
   return date.toISOString().split('T')[0];
 }
 
-function periodDays(p: Period) {
-  if (p === 'gunluk') return 1;
-  if (p === 'haftalik') return 7;
-  return 30;
-}
-
-function shortLabel(date: string, period: Period) {
-  const d = new Date(`${date}T00:00:00`);
-  if (period === 'aylik') return `${d.getDate()}`;
-  return ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'][d.getDay()];
+function startOfMonth(date = new Date()) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
 export default function RaporlarPage() {
@@ -29,6 +21,7 @@ export default function RaporlarPage() {
   const [mounted, setMounted] = useState(false);
   const [tab, setTab] = useState<Period>('gunluk');
   const [focus, setFocus] = useState<'taken' | 'skipped'>('taken');
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -36,10 +29,22 @@ export default function RaporlarPage() {
   }, [user, router]);
 
   const rangeDates = useMemo(() => {
-    const count = periodDays(tab);
-    return Array.from({ length: count }).map((_, i) => {
+    const today = new Date();
+    if (tab === 'aylik') {
+      const start = startOfMonth(today);
+      const out: string[] = [];
+      const d = new Date(start);
+      while (d <= today) {
+        out.push(dayKey(d));
+        d.setDate(d.getDate() + 1);
+      }
+      return out;
+    }
+
+    const days = tab === 'gunluk' ? 1 : 7;
+    return Array.from({ length: days }).map((_, i) => {
       const d = new Date();
-      d.setDate(d.getDate() - (count - i - 1));
+      d.setDate(d.getDate() - (days - i - 1));
       return dayKey(d);
     });
   }, [tab]);
@@ -61,16 +66,19 @@ export default function RaporlarPage() {
     });
   }, [periodLogs, rangeDates]);
 
-  const skippedDetails = useMemo(() => {
-    return periodLogs
-      .filter((l) => l.status === 'skipped')
-      .sort((a, b) => `${b.date} ${b.scheduleTime}`.localeCompare(`${a.date} ${a.scheduleTime}`))
-      .map((l) => ({ ...l, medicineName: medicines.find((m) => m.id === l.medicineId)?.name ?? 'Bilinmeyen İlaç' }));
-  }, [periodLogs, medicines]);
+  const selectedDay = selectedDate ?? rangeDates[rangeDates.length - 1] ?? null;
+  const selectedDetails = useMemo(() => {
+    if (!selectedDay) return [];
+    return dailyLogs
+      .filter((l) => l.date === selectedDay)
+      .sort((a, b) => a.scheduleTime.localeCompare(b.scheduleTime))
+      .map((l) => ({
+        ...l,
+        medicineName: medicines.find((m) => m.id === l.medicineId)?.name ?? 'Bilinmeyen İlaç',
+      }));
+  }, [selectedDay, dailyLogs, medicines]);
 
   if (!mounted || !user) return null;
-
-  const barWidth = tab === 'aylik' ? 16 : 28;
 
   return (
     <main style={{ minHeight: '100dvh', paddingBottom: '90px' }}>
@@ -102,16 +110,17 @@ export default function RaporlarPage() {
             </button>
           </div>
 
-          <div style={{ marginTop: '16px', overflowX: tab === 'aylik' ? 'auto' : 'visible', paddingBottom: '6px' }}>
-            <div style={{ minWidth: tab === 'aylik' ? '720px' : '100%', height: '180px', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+          <div style={{ marginTop: '16px', overflowX: 'auto', paddingBottom: '6px' }}>
+            <div style={{ minWidth: `${Math.max(420, rangeDates.length * 24)}px`, height: '180px', display: 'flex', gap: '6px', alignItems: 'flex-end' }}>
               {chartData.map((d) => {
                 const val = focus === 'taken' ? d.takenPct : d.skippedPct;
                 const bar = Math.max(4, Math.round((val / 100) * 130));
+                const isActive = selectedDay === d.date;
                 return (
-                  <div key={d.date} style={{ width: `${barWidth}px`, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                    <div title={`${d.date} - %${val}`} style={{ width: '100%', height: `${bar}px`, borderRadius: '8px 8px 4px 4px', background: focus === 'taken' ? 'linear-gradient(180deg,#22C55E,#16A34A)' : 'linear-gradient(180deg,#EF4444,#DC2626)' }} />
-                    <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{shortLabel(d.date, tab)}</span>
-                  </div>
+                  <button key={d.date} onClick={() => setSelectedDate(d.date)} style={{ width: '18px', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', border: 'none', background: 'transparent', cursor: 'pointer' }}>
+                    <div style={{ width: '100%', height: `${bar}px`, borderRadius: '8px 8px 4px 4px', background: focus === 'taken' ? 'linear-gradient(180deg,#22C55E,#16A34A)' : 'linear-gradient(180deg,#EF4444,#DC2626)', outline: isActive ? '2px solid var(--amber)' : 'none' }} />
+                    <span style={{ fontSize: '10px', color: isActive ? 'var(--amber)' : 'var(--text-muted)', fontWeight: isActive ? 700 : 400 }}>{new Date(`${d.date}T00:00:00`).getDate()}</span>
+                  </button>
                 );
               })}
             </div>
@@ -120,23 +129,21 @@ export default function RaporlarPage() {
           <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--text-muted)' }}>Toplam kayıt: {total}</div>
         </div>
 
-        {focus === 'skipped' && (
-          <div className="glass-card" style={{ padding: '16px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 800, marginBottom: '12px' }}>İçilmeyen Detayı ({tab})</h3>
-            {skippedDetails.length === 0 ? (
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Bu dönemde içilmeyen ilaç yok.</p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {skippedDetails.map((item, i) => (
-                  <div key={`${item.medicineId}-${item.date}-${item.scheduleTime}-${i}`} style={{ border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px 12px', background: 'rgba(255,255,255,0.6)' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 700 }}>{item.medicineName}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{item.date} - {item.scheduleTime}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="glass-card" style={{ padding: '16px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 800, marginBottom: '12px' }}>Seçili Gün Detayı ({selectedDay ?? '-'})</h3>
+          {selectedDetails.length === 0 ? (
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Seçili gün için kayıt yok.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {selectedDetails.map((item, i) => (
+                <div key={`${item.medicineId}-${item.scheduleTime}-${i}`} style={{ border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px 12px', background: 'rgba(255,255,255,0.6)' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 700 }}>{item.medicineName}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{item.scheduleTime} - {item.status === 'taken' ? 'İçildi' : item.status === 'skipped' ? 'İçilmedi' : item.status === 'snoozed' ? 'Ertelendi' : 'Bekliyor'}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <BottomNav />
